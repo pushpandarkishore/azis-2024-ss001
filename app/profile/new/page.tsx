@@ -86,19 +86,19 @@ export default function NewProfilePage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-16">
-        <div className="text-center max-w-md p-8 sm:p-10 rounded-[24px] border border-[#3A3A3A] bg-[#2E2E2E] shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
-          <div className="w-16 h-16 rounded-full bg-[#5E8A67]/15 text-[#5E8A67] border border-[#5E8A67]/30 flex items-center justify-center mx-auto mb-6">
+      <div className="min-h-screen flex items-center justify-center px-4 py-16 bg-[#FBF9F5]">
+        <div className="text-center max-w-md p-8 sm:p-10 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+          <div className="w-16 h-16 rounded-full bg-[#3D724D]/10 text-[#3D724D] border border-[#3D724D]/25 flex items-center justify-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8" />
           </div>
-          <h1 className="font-serif text-3xl font-light text-[#E6E8E8] mb-3">Welcome to the Guild</h1>
-          <p className="text-[#CFC7C1] text-xs font-light mb-8 leading-relaxed">
-            Your creator profile has been published to the editorial index. You can now initiate direct client commissions or balanced skill-swap collaborations.
+          <h1 className="font-serif text-3xl font-light text-[#1C1917] mb-3">Welcome to the Directory</h1>
+          <p className="text-[#68625D] text-xs font-light mb-8 leading-relaxed">
+            Your creator profile has been published to the editorial index. You can now initiate direct client commissions or balanced barter collaborations.
           </p>
           <div className="flex flex-col gap-3">
             <Link
               href="/marketplace"
-              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-[16px] bg-[#C46A6D] text-white font-medium text-xs hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm"
+              className="flex items-center justify-center gap-2 px-6 py-3.5 rounded-[16px] bg-[#A34835] text-white font-semibold uppercase tracking-wider text-xs hover:bg-[#8C3B2A] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-[0_4px_14px_rgba(163,72,53,0.25)]"
             >
               <span>Explore Marketplace</span>
               <ArrowRight className="w-4 h-4" />
@@ -106,7 +106,7 @@ export default function NewProfilePage() {
             {creatorId && (
               <Link
                 href={`/creators/${creatorId}`}
-                className="px-6 py-3.5 rounded-[16px] border border-[#444444] text-[#CFC7C1] font-medium text-xs hover:text-[#E6E8E8] hover:border-[#7A7A7A] transition-all duration-200 text-center"
+                className="px-6 py-3.5 rounded-[16px] border border-[#DCD5C9] text-[#68625D] font-medium text-xs hover:text-[#1C1917] hover:border-[#8C6D58] transition-all duration-200 text-center"
               >
                 View Live Profile
               </Link>
@@ -118,17 +118,17 @@ export default function NewProfilePage() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-12 max-w-[1280px] mx-auto">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-12 max-w-[1280px] mx-auto bg-[#FBF9F5] text-[#1C1917]">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#B4887A]/15 border border-[#B4887A]/30 text-[#B4887A] text-xs tracking-wider uppercase font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8C6D58]/10 border border-[#8C6D58]/20 text-[#8C6D58] text-xs tracking-wider uppercase font-semibold mb-4">
             Creator Registration &middot; Editorial Guild
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-light text-[#E6E8E8] tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-4xl font-light text-[#1C1917] tracking-tight">
             Join the SkillSwap Index
           </h1>
-          <p className="text-[#CFC7C1] text-sm mt-2 font-light">
-            Curate your creator profile across four deliberate steps.
+          <p className="text-[#68625D] text-sm mt-2 font-light">
+            Curate your practitioner profile across four deliberate steps.
           </p>
         </div>
 
@@ -139,22 +139,22 @@ export default function NewProfilePage() {
               <div
                 className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono shrink-0 transition-all duration-200 ${
                   i <= step
-                    ? "bg-[#C46A6D] text-white font-semibold"
-                    : "bg-[#262626] border border-[#444444] text-[#7A7A7A]"
+                    ? "bg-[#A34835] text-white font-semibold"
+                    : "bg-white border border-[#DCD5C9] text-[#8E8780]"
                 }`}
               >
                 {i < step ? <CheckCircle className="w-3.5 h-3.5" /> : i + 1}
               </div>
               <span
-                className={`text-[11px] uppercase tracking-wider hidden sm:block ${
-                  i === step ? "text-[#E6E8E8] font-medium" : "text-[#7A7A7A]"
+                className={`text-[11px] uppercase tracking-wider hidden sm:block font-medium ${
+                  i === step ? "text-[#1C1917]" : "text-[#8E8780]"
                 }`}
               >
                 {s}
               </span>
               {i < STEPS.length - 1 && (
                 <div
-                  className={`flex-1 h-px ${i < step ? "bg-[#C46A6D]" : "bg-[#3A3A3A]"}`}
+                  className={`flex-1 h-px ${i < step ? "bg-[#A34835]" : "bg-[#E7E2D9]"}`}
                 />
               )}
             </div>
@@ -162,12 +162,12 @@ export default function NewProfilePage() {
         </div>
 
         {/* Card Form */}
-        <div className="rounded-[24px] border border-[#3A3A3A] bg-[#2E2E2E] shadow-[0_8px_30px_rgb(0,0,0,0.2)] p-8 sm:p-10 space-y-7">
+        <div className="rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] p-8 sm:p-10 space-y-7">
           {/* Step 0: Basic Info */}
           {step === 0 && (
             <div className="space-y-5">
-              <h2 className="font-serif text-2xl font-light text-[#E6E8E8] flex items-center gap-2.5">
-                <User className="w-5 h-5 text-[#B4887A]" />
+              <h2 className="font-serif text-2xl font-light text-[#1C1917] flex items-center gap-2.5">
+                <User className="w-5 h-5 text-[#8C6D58]" />
                 Identity & Details
               </h2>
               {[
@@ -177,7 +177,7 @@ export default function NewProfilePage() {
                 { label: "Location", field: "location", type: "text", placeholder: "e.g. Copenhagen, Denmark" },
               ].map(({ label, field, type, placeholder }) => (
                 <div key={field}>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-[#CFC7C1] mb-2 block">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2 block">
                     {label}
                   </label>
                   <input
@@ -185,12 +185,12 @@ export default function NewProfilePage() {
                     value={(form as Record<string, unknown>)[field] as string}
                     onChange={(e) => updateForm(field, e.target.value)}
                     placeholder={placeholder}
-                    className="w-full px-4 py-3 rounded-[16px] border border-[#444444] bg-[#262626] text-[#E6E8E8] placeholder:text-[#7A7A7A] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200"
+                    className="w-full px-4 py-3 rounded-[16px] border border-[#DCD5C9] bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] text-sm focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200"
                   />
                 </div>
               ))}
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-[#CFC7C1] mb-2 block">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2 block">
                   Bio (min 10 characters)
                 </label>
                 <textarea
@@ -198,7 +198,7 @@ export default function NewProfilePage() {
                   onChange={(e) => updateForm("bio", e.target.value)}
                   placeholder="Articulate your creative ethos, tools of choice, and typical project engagements..."
                   rows={4}
-                  className="w-full p-4 rounded-[16px] border border-[#444444] bg-[#262626] text-[#E6E8E8] placeholder:text-[#7A7A7A] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200 leading-relaxed resize-none"
+                  className="w-full p-4 rounded-[16px] border border-[#DCD5C9] bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] text-sm focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200 leading-relaxed resize-none"
                 />
               </div>
             </div>
@@ -207,8 +207,8 @@ export default function NewProfilePage() {
           {/* Step 1: Skills */}
           {step === 1 && (
             <div className="space-y-6">
-              <h2 className="font-serif text-2xl font-light text-[#E6E8E8] flex items-center gap-2.5">
-                <Zap className="w-5 h-5 text-[#B4887A]" />
+              <h2 className="font-serif text-2xl font-light text-[#1C1917] flex items-center gap-2.5">
+                <Zap className="w-5 h-5 text-[#8C6D58]" />
                 Craft Disciplines
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -219,8 +219,8 @@ export default function NewProfilePage() {
                     onClick={() => (form.skills.includes(skill) ? removeSkill(skill) : addSkill(skill))}
                     className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                       form.skills.includes(skill)
-                        ? "bg-[#C46A6D] text-white shadow-sm"
-                        : "bg-[#262626] border border-[#444444] text-[#CFC7C1] hover:border-[#7A7A7A] hover:text-[#E6E8E8]"
+                        ? "bg-[#A34835] text-white shadow-xs"
+                        : "bg-[#F5F2EC] border border-[#DCD5C9] text-[#68625D] hover:border-[#8C6D58] hover:text-[#1C1917]"
                     }`}
                   >
                     {skill}
@@ -228,18 +228,18 @@ export default function NewProfilePage() {
                 ))}
               </div>
               {form.skills.length > 0 && (
-                <div className="border-t border-[#3A3A3A] pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-[#7A7A7A] mb-2.5 font-mono">
+                <div className="border-t border-[#E7E2D9] pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#8C6D58] mb-2.5 font-mono">
                     Selected Disciplines ({form.skills.length}):
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {form.skills.map((s) => (
                       <span
                         key={s}
-                        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B4887A]/15 text-[#B4887A] border border-[#B4887A]/30 text-xs font-medium"
+                        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8C6D58]/10 text-[#8C6D58] border border-[#8C6D58]/20 text-xs font-medium"
                       >
                         {s}{" "}
-                        <button type="button" onClick={() => removeSkill(s)} className="hover:text-white">
+                        <button type="button" onClick={() => removeSkill(s)} className="hover:text-[#1C1917]">
                           <X className="w-3 h-3" />
                         </button>
                       </span>
@@ -259,7 +259,7 @@ export default function NewProfilePage() {
                     }
                   }}
                   placeholder="Add custom discipline..."
-                  className="flex-1 px-4 py-2.5 rounded-[16px] border border-[#444444] bg-[#262626] text-[#E6E8E8] text-xs focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200"
+                  className="flex-1 px-4 py-2.5 rounded-[16px] border border-[#DCD5C9] bg-[#F5F2EC] text-[#1C1917] text-xs focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200"
                 />
                 <button
                   type="button"
@@ -269,7 +269,7 @@ export default function NewProfilePage() {
                       updateForm("customSkill", "");
                     }
                   }}
-                  className="px-4 py-2.5 rounded-[16px] bg-[#C46A6D] text-white hover:bg-[#B55B5E] transition-all duration-200"
+                  className="px-4 py-2.5 rounded-[16px] bg-[#A34835] text-white hover:bg-[#8C3B2A] transition-all duration-200"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -280,16 +280,16 @@ export default function NewProfilePage() {
           {/* Step 2: Portfolio */}
           {step === 2 && (
             <div className="space-y-6">
-              <h2 className="font-serif text-2xl font-light text-[#E6E8E8]">Portfolio Sample</h2>
+              <h2 className="font-serif text-2xl font-light text-[#1C1917]">Portfolio Sample</h2>
               {form.portfolio.map((item, i) => (
-                <div key={i} className="space-y-4 p-5 rounded-[16px] border border-[#3A3A3A] bg-[#262626]">
+                <div key={i} className="space-y-4 p-5 rounded-[16px] border border-[#E7E2D9] bg-[#FAF8F5]">
                   {[
                     { label: "Project Title", field: "title", placeholder: "e.g. Identity Architecture for Design Biennale" },
                     { label: "Deliverable Scope", field: "description", placeholder: "Detailed scope, creative execution, and tools applied..." },
                     { label: "Tools Used", field: "tools_used", placeholder: "e.g. Figma, DaVinci Resolve, Webflow" },
                   ].map(({ label, field, placeholder }) => (
                     <div key={field}>
-                      <label className="text-xs font-semibold uppercase tracking-wider text-[#CFC7C1] mb-1.5 block">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-1.5 block">
                         {label}
                       </label>
                       {field === "description" ? (
@@ -302,7 +302,7 @@ export default function NewProfilePage() {
                           }}
                           placeholder={placeholder}
                           rows={3}
-                          className="w-full p-3 rounded-[12px] border border-[#444444] bg-[#1F2224] text-[#E6E8E8] text-xs focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200 resize-none"
+                          className="w-full p-3 rounded-[12px] border border-[#DCD5C9] bg-white text-[#1C1917] text-xs focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200 resize-none"
                         />
                       ) : (
                         <input
@@ -314,7 +314,7 @@ export default function NewProfilePage() {
                             updateForm("portfolio", updated);
                           }}
                           placeholder={placeholder}
-                          className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#444444] bg-[#1F2224] text-[#E6E8E8] text-xs focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200"
+                          className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#DCD5C9] bg-white text-[#1C1917] text-xs focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200"
                         />
                       )}
                     </div>
@@ -327,16 +327,16 @@ export default function NewProfilePage() {
           {/* Step 3: Availability */}
           {step === 3 && (
             <div className="space-y-6">
-              <h2 className="font-serif text-2xl font-light text-[#E6E8E8]">Availability & Response</h2>
+              <h2 className="font-serif text-2xl font-light text-[#1C1917]">Availability & Response</h2>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-[#CFC7C1] mb-3 block">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-3 block">
                   Studio Capacity Status
                 </label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { value: "available", label: "Available", activeClass: "border-[#5E8A67] bg-[#5E8A67]/15 text-[#5E8A67]" },
-                    { value: "busy", label: "Busy", activeClass: "border-[#C89B53] bg-[#C89B53]/15 text-[#C89B53]" },
-                    { value: "unavailable", label: "Unavailable", activeClass: "border-[#B85C5C] bg-[#B85C5C]/15 text-[#B85C5C]" },
+                    { value: "available", label: "Available", activeClass: "border-[#3D724D] bg-[#3D724D]/10 text-[#3D724D]" },
+                    { value: "busy", label: "Busy", activeClass: "border-[#B47228] bg-[#B47228]/10 text-[#B47228]" },
+                    { value: "unavailable", label: "Unavailable", activeClass: "border-[#A83C3C] bg-[#A83C3C]/10 text-[#A83C3C]" },
                   ].map((opt) => (
                     <button
                       key={opt.value}
@@ -345,7 +345,7 @@ export default function NewProfilePage() {
                       className={`py-3 rounded-[16px] border text-xs font-semibold uppercase tracking-wider transition-all duration-200 ${
                         form.availability === opt.value
                           ? opt.activeClass
-                          : "border-[#444444] bg-[#262626] text-[#7A7A7A] hover:border-[#7A7A7A] hover:text-[#CFC7C1]"
+                          : "border-[#DCD5C9] bg-[#F5F2EC] text-[#8E8780] hover:border-[#8C6D58] hover:text-[#1C1917]"
                       }`}
                     >
                       {opt.label}
@@ -354,13 +354,13 @@ export default function NewProfilePage() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-[#CFC7C1] mb-2 block">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2 block">
                   Typical Inquiry Turnaround
                 </label>
                 <select
                   value={form.response_time}
                   onChange={(e) => updateForm("response_time", e.target.value)}
-                  className="w-full px-4 py-3 rounded-[16px] border border-[#444444] bg-[#262626] text-[#E6E8E8] text-xs font-mono focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-[16px] border border-[#DCD5C9] bg-[#F5F2EC] text-[#1C1917] text-xs font-mono focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200"
                 >
                   {["1h", "2h", "4h", "6h", "8h", "12h", "24h", "48h"].map((t) => (
                     <option key={t} value={t}>
@@ -373,19 +373,19 @@ export default function NewProfilePage() {
           )}
 
           {error && (
-            <p className="text-[#B85C5C] text-xs mt-4 flex items-center gap-1.5">
+            <p className="text-[#A83C3C] text-xs mt-4 flex items-center gap-1.5">
               <X className="w-3.5 h-3.5" />
               <span>{error}</span>
             </p>
           )}
 
           {/* Navigation Controls */}
-          <div className="flex justify-between items-center pt-4 border-t border-[#3A3A3A]">
+          <div className="flex justify-between items-center pt-4 border-t border-[#E7E2D9]">
             <button
               type="button"
               onClick={() => setStep((s) => Math.max(0, s - 1))}
               disabled={step === 0}
-              className="px-5 py-2.5 rounded-[16px] border border-[#444444] text-[#CFC7C1] text-xs font-medium disabled:opacity-30 hover:text-[#E6E8E8] hover:border-[#7A7A7A] transition-all duration-200"
+              className="px-5 py-2.5 rounded-[16px] border border-[#DCD5C9] text-[#68625D] text-xs font-medium disabled:opacity-30 hover:text-[#1C1917] hover:border-[#8C6D58] transition-all duration-200"
             >
               Previous
             </button>
@@ -393,7 +393,7 @@ export default function NewProfilePage() {
               <button
                 type="button"
                 onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}
-                className="px-6 py-2.5 rounded-[16px] bg-[#C46A6D] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm"
+                className="px-6 py-2.5 rounded-[16px] bg-[#A34835] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#8C3B2A] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-xs"
               >
                 Next Step
               </button>
@@ -402,7 +402,7 @@ export default function NewProfilePage() {
                 type="button"
                 onClick={submit}
                 disabled={loading}
-                className="px-6 py-2.5 rounded-[16px] bg-[#C46A6D] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 shadow-sm"
+                className="px-6 py-2.5 rounded-[16px] bg-[#A34835] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#8C3B2A] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 disabled:opacity-50 shadow-[0_4px_14px_rgba(163,72,53,0.25)]"
               >
                 {loading ? "Publishing..." : "Complete Profile"}
               </button>

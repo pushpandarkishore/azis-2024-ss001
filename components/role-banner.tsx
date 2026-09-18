@@ -40,24 +40,24 @@ export function RoleBanner() {
   ];
 
   return (
-    <aside aria-label="Demo role and evaluation switcher" className="sticky top-0 z-50 bg-[#1F2224]/95 backdrop-blur-md border-b border-[#3A3A3A]">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
-        {/* Editorial Role Indicator & Toggle */}
+    <aside aria-label="Demo role and evaluation switcher" className="sticky top-0 z-50 bg-[#F5F2EC]/95 backdrop-blur-md border-b border-[#E7E2D9]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-2 flex flex-wrap items-center justify-between gap-3 text-xs">
+        {/* Warm Editorial Role Indicator & Toggle */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2E2E2E] border border-[#3A3A3A] text-[#E6E8E8]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#5E8A67]" />
-            <span className="text-[#CFC7C1] font-normal">Viewing as:</span>
-            <span className={`font-medium ${isClient ? "text-[#C46A6D]" : "text-[#B4887A]"}`}>
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-[#E7E2D9] text-[#1C1917] shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#3D724D]" />
+            <span className="text-[#68625D] font-normal">Viewing as:</span>
+            <span className={`font-semibold ${isClient ? "text-[#A34835]" : "text-[#8C6D58]"}`}>
               {isClient ? "Client (Demo Client)" : "Creator (Demo Creator)"}
             </span>
           </div>
 
           <button
             onClick={toggleRole}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#262626] hover:bg-[#2E2E2E] text-[#CFC7C1] hover:text-[#E6E8E8] font-medium transition-all duration-200 ease-out border border-[#444444] hover:border-[#7A7A7A]"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white hover:bg-[#F3EFEA] text-[#68625D] hover:text-[#1C1917] font-medium transition-all duration-200 ease-out border border-[#DCD5C9] hover:border-[#8C6D58] shadow-xs"
             title="Toggle between Client and Creator perspective"
           >
-            <ArrowRightLeft className="w-3.5 h-3.5 text-[#B4887A]" />
+            <ArrowRightLeft className="w-3.5 h-3.5 text-[#8C6D58]" />
             <span className="hidden sm:inline">Switch to {isClient ? "Creator" : "Client"}</span>
             <span className="sm:hidden">Switch</span>
           </button>
@@ -72,10 +72,10 @@ export function RoleBanner() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all duration-200 ease-out ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all duration-200 ease-out ${
                   isActive
-                    ? "bg-[#C46A6D]/15 text-[#C46A6D] font-medium border border-[#C46A6D]/30"
-                    : "text-[#CFC7C1] hover:text-[#E6E8E8] hover:bg-[#2E2E2E]"
+                    ? "bg-[#A34835]/10 text-[#A34835] font-semibold border border-[#A34835]/30 shadow-xs"
+                    : "text-[#68625D] hover:text-[#1C1917] hover:bg-white"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

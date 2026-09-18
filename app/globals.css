@@ -1,29 +1,38 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Tailwind v4 @theme — Modern Editorial Luxury (Aesop × Airbnb × Linear)
-   Palette: #1F2224, #2E2E2E, #C46A6D, #B4887A, #F3E9E4, #E6E8E8, #CFC7C1
+   Tailwind v4 @theme — Warm Ivory & Espresso Editorial (Aesop / Kinfolk)
+   Palette:
+   - Background: #FBF9F5 (Warm Alabaster Linen)
+   - Cards/Surfaces: #FFFFFF (Pure Warm Crisp Ivory)
+   - Accent Primary (CTA): #A34835 (Rich Terracotta / Clay)
+   - Accent Secondary: #8C6D58 (Warm Sandstone Bronze)
+   - Neutral Muted Surface: #F3EFEA
+   - Border: #E7E2D9
+   - Typography Primary: #1C1917 (Deep Obsidian Espresso)
+   - Typography Secondary: #68625D (Warm Slate Stone)
+   - Typography Muted: #8E8780
    ============================================================ */
 @theme {
-  --color-background:          #1F2224;
-  --color-foreground:          #E6E8E8;
-  --color-card:                #2E2E2E;
-  --color-card-foreground:     #E6E8E8;
-  --color-popover:             #2E2E2E;
-  --color-popover-foreground:  #E6E8E8;
-  --color-primary:             #C46A6D;
+  --color-background:          #FBF9F5;
+  --color-foreground:          #1C1917;
+  --color-card:                #FFFFFF;
+  --color-card-foreground:     #1C1917;
+  --color-popover:             #FFFFFF;
+  --color-popover-foreground:  #1C1917;
+  --color-primary:             #A34835;
   --color-primary-foreground:  #FFFFFF;
-  --color-secondary:           #B4887A;
+  --color-secondary:           #8C6D58;
   --color-secondary-foreground: #FFFFFF;
-  --color-muted:               #262626;
-  --color-muted-foreground:    #CFC7C1;
-  --color-accent:              #B4887A;
+  --color-muted:               #F3EFEA;
+  --color-muted-foreground:    #68625D;
+  --color-accent:              #8C6D58;
   --color-accent-foreground:   #FFFFFF;
-  --color-destructive:         #B85C5C;
+  --color-destructive:         #A83C3C;
   --color-destructive-foreground: #FFFFFF;
-  --color-border:              #3A3A3A;
-  --color-input:               #444444;
-  --color-ring:                #C46A6D;
+  --color-border:              #E7E2D9;
+  --color-input:               #DCD5C9;
+  --color-ring:                #A34835;
 
   /* Editorial radii tokens */
   --radius-card: 24px;
@@ -37,24 +46,24 @@
 
 @layer base {
   :root {
-    --background: #1F2224;
-    --foreground: #E6E8E8;
-    --card: #2E2E2E;
-    --card-foreground: #E6E8E8;
-    --primary: #C46A6D;
-    --secondary: #B4887A;
-    --border: #3A3A3A;
-    --muted-foreground: #CFC7C1;
+    --background: #FBF9F5;
+    --foreground: #1C1917;
+    --card: #FFFFFF;
+    --card-foreground: #1C1917;
+    --primary: #A34835;
+    --secondary: #8C6D58;
+    --border: #E7E2D9;
+    --muted-foreground: #68625D;
   }
 
   * {
-    border-color: #3A3A3A;
+    border-color: #E7E2D9;
     box-sizing: border-box;
   }
 
   body {
-    background-color: #1F2224;
-    color: #E6E8E8;
+    background-color: #FBF9F5;
+    color: #1C1917;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -67,48 +76,46 @@
   }
 }
 
-/* ============================================================
-   Custom Scrollbar
-   ============================================================ */
+/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #3A3A3A; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #7A7A7A; }
+::-webkit-scrollbar-track { background: #FBF9F5; }
+::-webkit-scrollbar-thumb { background: #DCD5C9; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #8C6D58; }
 
-/* ============================================================
-   Editorial Utility Classes
-   ============================================================ */
+/* Editorial Utility Classes */
 .editorial-hero-heading {
   font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
-  font-weight: 500;
-  line-height: 1.05;
+  font-weight: 400;
+  line-height: 1.08;
   letter-spacing: -0.025em;
-  color: #E6E8E8;
+  color: #1C1917;
 }
 
 .editorial-card {
   border-radius: 24px;
-  background-color: #2E2E2E;
-  border: 1px solid #3A3A3A;
+  background-color: #FFFFFF;
+  border: 1px solid #E7E2D9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   transition: transform 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .editorial-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(122, 122, 122, 0.4);
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.35);
+  border-color: #DCD5C9;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .editorial-btn {
   border-radius: 16px;
-  background-color: #C46A6D;
+  background-color: #A34835;
   color: #FFFFFF;
   font-weight: 600;
+  box-shadow: 0 4px 14px rgba(163, 72, 53, 0.2);
   transition: transform 200ms ease-out, background-color 200ms ease-out;
 }
 
 .editorial-btn:hover {
-  background-color: #B55B5E;
+  background-color: #8C3B2A;
   transform: scale(1.02);
 }
 
@@ -117,28 +124,28 @@
 }
 
 .editorial-input {
-  border-radius: 14px;
-  background-color: #262626;
-  border: 1px solid #444444;
-  color: #E6E8E8;
+  border-radius: 16px;
+  background-color: #F5F2EC;
+  border: 1px solid #DCD5C9;
+  color: #1C1917;
   transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
 }
 
 .editorial-input:focus {
-  border-color: #C46A6D;
+  border-color: #A34835;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(196, 106, 109, 0.2);
+  box-shadow: 0 0 0 2px rgba(163, 72, 53, 0.2);
 }
 
 /* Skeleton Loading Animation */
 @keyframes pulse-subtle {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 0.3; }
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.35; }
 }
 
 .skeleton-box {
-  background-color: #2E2E2E;
-  border: 1px solid #3A3A3A;
+  background-color: #F3EFEA;
+  border: 1px solid #E7E2D9;
   border-radius: 16px;
   animation: pulse-subtle 1.8s ease-in-out infinite;
 }
