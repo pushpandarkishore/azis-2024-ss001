@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDemoRole } from "@/lib/role-context";
-import { User, Briefcase, PlusCircle, LayoutDashboard, BookmarkCheck, ArrowRightLeft, Sparkles, CheckCircle2 } from "lucide-react";
+import { Briefcase, PlusCircle, LayoutDashboard, BookmarkCheck, ArrowRightLeft } from "lucide-react";
 
 export function RoleBanner() {
-  const { role, user, toggleRole, setRole } = useDemoRole();
+  const { role, toggleRole } = useDemoRole();
   const pathname = usePathname();
 
   const isClient = role === "client";
@@ -16,63 +16,55 @@ export function RoleBanner() {
       href: "/marketplace",
       label: "Browse Gigs",
       icon: Briefcase,
-      badge: "Feature 2 & 3",
     },
     {
       href: "/gigs/new",
       label: "Post a Gig",
       icon: PlusCircle,
-      badge: "Feature 1",
     },
     {
       href: "/creator/dashboard",
       label: "Creator Dashboard",
       icon: LayoutDashboard,
-      badge: "Feature 4",
     },
     {
       href: "/my-bookings",
       label: "My Bookings",
       icon: BookmarkCheck,
-      badge: "Feature 5",
     },
     {
       href: "/trade",
       label: "Barter Engine",
       icon: ArrowRightLeft,
-      badge: "AI Equivalence",
     },
   ];
 
   return (
-    <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/70 shadow-sm">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
-        {/* Role Indicator & Toggle */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-foreground font-semibold">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span>Viewing as:</span>
-            <span className={isClient ? "text-cyan-400 font-bold" : "text-violet-400 font-bold"}>
+    <aside aria-label="Demo role and evaluation switcher" className="sticky top-0 z-50 bg-[#1F2224]/95 backdrop-blur-md border-b border-[#3A3A3A]">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+        {/* Editorial Role Indicator & Toggle */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#2E2E2E] border border-[#3A3A3A] text-[#E6E8E8]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#5E8A67]" />
+            <span className="text-[#CFC7C1] font-normal">Viewing as:</span>
+            <span className={`font-medium ${isClient ? "text-[#C46A6D]" : "text-[#B4887A]"}`}>
               {isClient ? "Client (Demo Client)" : "Creator (Demo Creator)"}
             </span>
           </div>
 
           <button
             onClick={toggleRole}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted hover:bg-muted/80 text-foreground font-medium transition-colors border border-border/60 hover:border-primary/50"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#262626] hover:bg-[#2E2E2E] text-[#CFC7C1] hover:text-[#E6E8E8] font-medium transition-all duration-200 ease-out border border-[#444444] hover:border-[#7A7A7A]"
             title="Toggle between Client and Creator perspective"
           >
-            <ArrowRightLeft className="w-3.5 h-3.5 text-primary" />
+            <ArrowRightLeft className="w-3.5 h-3.5 text-[#B4887A]" />
             <span className="hidden sm:inline">Switch to {isClient ? "Creator" : "Client"}</span>
             <span className="sm:hidden">Switch</span>
           </button>
         </div>
 
         {/* Direct Navigation Links to every required view for Graders */}
-        <div className="flex items-center flex-wrap gap-1">
+        <nav aria-label="Evaluation shortcuts" className="flex items-center flex-wrap gap-1">
           {navLinks.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -80,10 +72,10 @@ export function RoleBanner() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all duration-200 ease-out ${
                   isActive
-                    ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                    ? "bg-[#C46A6D]/15 text-[#C46A6D] font-medium border border-[#C46A6D]/30"
+                    : "text-[#CFC7C1] hover:text-[#E6E8E8] hover:bg-[#2E2E2E]"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -91,8 +83,8 @@ export function RoleBanner() {
               </Link>
             );
           })}
-        </div>
+        </nav>
       </div>
-    </div>
+    </aside>
   );
 }

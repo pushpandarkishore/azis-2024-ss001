@@ -1,331 +1,241 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
-  Zap,
-  Users,
-  BarChart3,
-  FileText,
-  Shield,
-  Star,
-  TrendingUp,
   Sparkles,
-  Flame,
+  Compass,
   ArrowRightLeft,
-  CheckCircle2,
-  Play,
+  Shield,
   Layers,
-  Palette,
-  Video,
-  Headphones,
-  Code,
-  Compass
+  Award,
+  CheckCircle2
 } from "lucide-react";
 
-const LIVE_TICKER_ITEMS = [
-  "🔥 Zara Chen traded 3D Intro for Sofia's Full-Stack Next.js App (98% Fair)",
-  "⚡ David Kim swapped 4K Color Grade for Marcus's SaaS Design System (95% Fair)",
-  "🎧 Liam Thorne mastered 8 Podcast Episodes for Elena's SEO Strategy (92% Fair)",
-  "🚀 Aria Tanaka exchanged 30 Vector Icons for TechStart's Pitch Deck Copy (96% Fair)",
-  "✨ 48 Active Creators jamming & trading right now with $0 platform cash fee",
+const EDITORIAL_DISCIPLINES = [
+  { name: "Brand & Visual Identity", category: "Design", count: "14 Available" },
+  { name: "Cinematic Post-Production", category: "Video Editing", count: "9 Available" },
+  { name: "Studio Sound Engineering", category: "Audio", count: "8 Available" },
+  { name: "Editorial & Strategy Copy", category: "Writing", count: "11 Available" },
+  { name: "1-on-1 Craft Mentorship", category: "Tutoring", count: "12 Available" },
 ];
 
-const SKILL_CHIPS = [
-  { name: "3D Motion Graphics", icon: Layers, color: "text-violet-400 bg-violet-500/10 border-violet-500/30" },
-  { name: "UI/UX & Figma", icon: Palette, color: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30" },
-  { name: "Shortform & Reels", icon: Video, color: "text-pink-400 bg-pink-500/10 border-pink-500/30" },
-  { name: "Spatial Audio Mix", icon: Headphones, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30" },
-  { name: "Next.js & React", icon: Code, color: "text-amber-400 bg-amber-500/10 border-amber-500/30" },
-];
-
-const BENTO_CARDS = [
+const CURATED_PILLARS = [
   {
-    tag: "Feature 2 & 3",
-    title: "Instant Gig Booking & Direct Escrow",
-    description: "Browse 14+ curated gigs across Design, Video, Audio, Writing, and Tutoring. Book in 10 seconds with pre-seeded identity & zero signup walls.",
-    gradient: "from-violet-600/20 via-purple-600/10 to-transparent",
-    border: "hover:border-violet-500/50",
-    icon: Zap,
-    stat: "14+ Live Gigs",
+    num: "01",
+    title: "Curated Directory of Creative Craft",
+    subtitle: "Browse & Book",
+    description: "Discover verified independent practitioners across motion, brand systems, sound design, and long-form strategy. Book directly with transparent deliverables and zero middleman friction.",
     link: "/marketplace",
-    linkText: "Browse Marketplace",
+    linkText: "Explore Gigs",
   },
   {
-    tag: "Feature 1",
-    title: "Post & Monetize Your Creative Powers",
-    description: "Publish your craft in 60 seconds with live reactive card previews, category tags, and hourly or flat deliverable rates.",
-    gradient: "from-cyan-600/20 via-blue-600/10 to-transparent",
-    border: "hover:border-cyan-500/50",
-    icon: Flame,
-    stat: "Instant Publishing",
+    num: "02",
+    title: "Post & Showcase Your Service Scope",
+    subtitle: "Direct Listings",
+    description: "Present your creative practice with clean editorial cards, deliverable schedules, and fixed or hourly rates. Pre-seeded demo identity enables immediate publishing.",
     link: "/gigs/new",
-    linkText: "Post a Gig Now",
+    linkText: "List a Service",
   },
   {
-    tag: "Feature 4 & 5",
-    title: "Creator Dashboard & Rejection Protocol (DP1)",
-    description: "Real-time incoming request feed with 1-click Accept or transparent Decline reason tags that automatically re-route clients to active peers.",
-    gradient: "from-emerald-600/20 via-teal-600/10 to-transparent",
-    border: "hover:border-emerald-500/50",
-    icon: Shield,
-    stat: "99% Trust Score",
-    link: "/creator/dashboard",
-    linkText: "Open Dashboard",
+    num: "03",
+    title: "Transparent Protocol for Rejection (DP1)",
+    subtitle: "Trust & Continuity",
+    description: "When a creator cannot commit, clients immediately receive clear contextual reason tags (e.g. Schedule Conflict) paired with an automated carousel of comparable peers.",
+    link: "/my-bookings",
+    linkText: "Client Portal",
   },
   {
-    tag: "AI Barter Engine",
-    title: "LEU × MSI Mathematical Equivalence",
-    description: "Our proprietary algorithm balances Labor Effort Units and Market Scarcity Index to calculate bulletproof barter fairness without cash.",
-    gradient: "from-amber-600/20 via-orange-600/10 to-transparent",
-    border: "hover:border-amber-500/50",
-    icon: BarChart3,
-    stat: "96.4% Avg. Fairness",
+    num: "04",
+    title: "Multi-Factor Barter Equivalence",
+    subtitle: "Labor Effort Units",
+    description: "An algorithmic dimensionless barter ratio (LEU × MSI) that accounts for skill rarity, tool overhead, and revisions to establish objective parity without cash exchange.",
     link: "/trade",
-    linkText: "Launch Calculator",
+    linkText: "Barter Calculator",
   },
 ];
 
 export default function HomePage() {
-  // Interactive Hero Swap Demo State
-  const [skillOffer, setSkillOffer] = useState("Video Editing");
-  const [skillRequest, setSkillRequest] = useState("UI/UX Design");
-
-  const fairness =
-    skillOffer === skillRequest
-      ? 100
-      : (skillOffer === "Video Editing" && skillRequest === "UI/UX Design")
-      ? 96
-      : (skillOffer === "3D Motion Graphics" && skillRequest === "Audio")
-      ? 92
-      : 89;
-
   return (
-    <div className="flex flex-col overflow-hidden">
-      {/* 🚀 Gen-Z Live Activity Marquee Ticker */}
-      <div className="w-full bg-primary/10 border-b border-primary/25 overflow-hidden py-2 select-none">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-8 text-xs font-semibold text-foreground/90">
-          {[...LIVE_TICKER_ITEMS, ...LIVE_TICKER_ITEMS].map((item, idx) => (
-            <span key={idx} className="inline-flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>{item}</span>
-              <span className="text-muted-foreground/50">&middot;</span>
-            </span>
-          ))}
-        </div>
+    <div className="flex flex-col bg-[#1F2224] text-[#E6E8E8]">
+      {/* Editorial Announcement Bar */}
+      <div className="border-b border-[#3A3A3A] bg-[#262626]/60 py-2.5 px-4 text-center">
+        <p className="text-xs text-[#CFC7C1] tracking-wide font-medium">
+          <span className="text-[#B4887A] font-serif italic mr-2 text-sm">Code2Career Track 2</span>
+          An editorial barter marketplace for independent creative practitioners
+        </p>
       </div>
 
-      {/* ⚡ HERO SECTION */}
-      <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 py-16">
-        {/* Dynamic ambient glowing orbs */}
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[28rem] h-[28rem] bg-violet-600/20 rounded-full blur-[110px] animate-float" />
-          <div className="absolute bottom-1/4 right-1/4 w-[24rem] h-[24rem] bg-cyan-500/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] bg-fuchsia-500/10 rounded-full blur-[130px]" />
-        </div>
-
-        <div className="max-w-6xl mx-auto text-center space-y-8">
-          {/* Top Pill */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs sm:text-sm font-semibold animate-pulse-glow">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
-            </span>
-            <span>SkillSwap &middot; The Creative Barter Protocol</span>
-            <span className="px-2 py-0.5 rounded-full bg-primary/20 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-              Code2Career
-            </span>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05]">
-            Trade Raw Talent. <br />
-            <span className="gradient-text">Zero Cash. Pure Craft.</span>
-          </h1>
-
-          <p className="text-base sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
-            The next-generation marketplace where video editors, designers, sound engineers, and creators trade high-end services using fair mathematical equivalence.
-          </p>
-
-          {/* Skill Tag Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            {SKILL_CHIPS.map((chip) => {
-              const Icon = chip.icon;
-              return (
-                <div
-                  key={chip.name}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold backdrop-blur-md transition-all hover:scale-105 cursor-pointer ${chip.color}`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  <span>{chip.name}</span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link
-              href="/marketplace"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-cyan-600 text-white font-bold text-base sm:text-lg hover:opacity-95 transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl shadow-violet-600/30 flex items-center justify-center gap-2 group"
-            >
-              <span>Explore Marketplace</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
-            </Link>
-
-            <Link
-              href="/trade"
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl border border-border bg-card/80 backdrop-blur-md text-foreground font-bold text-base sm:text-lg hover:bg-muted hover:border-primary/50 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-            >
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <span>AI Barter Calculator</span>
-            </Link>
-          </div>
-
-          {/* 🎮 Interactive Live Vibe / Trade Simulator Card */}
-          <div className="max-w-2xl mx-auto mt-12 p-6 rounded-3xl border border-border/80 bg-card/75 backdrop-blur-xl shadow-2xl space-y-4">
-            <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground border-b border-border/60 pb-3">
-              <span className="flex items-center gap-1.5 text-foreground font-bold">
-                <ArrowRightLeft className="w-4 h-4 text-primary" />
-                Live Barter Simulator (LEU × MSI)
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                {fairness}% Fair Trade Score
-              </span>
+      {/* Hero Section — Generous Whitespace & Editorial Typography */}
+      <section className="relative px-4 sm:px-8 pt-20 pb-28 md:pt-28 md:pb-36 max-w-[1280px] mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {/* Left Hero Column: Large Cormorant Garamond Heading */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#444444] bg-[#2E2E2E] text-xs text-[#B4887A]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5E8A67]" />
+              <span className="font-medium tracking-wide">Independent Creative Exchange</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
-              <div>
-                <label className="block text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-                  I Offer:
-                </label>
-                <select
-                  value={skillOffer}
-                  onChange={(e) => setSkillOffer(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-border bg-background text-foreground text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
-                >
-                  <option value="Video Editing">Video Editing (Longform + Shorts)</option>
-                  <option value="3D Motion Graphics">3D Motion Graphics & Intros</option>
-                  <option value="UI/UX Design">UI/UX Design & Design Systems</option>
-                  <option value="Audio">Audio Mixing & Mastering</option>
-                </select>
-              </div>
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-normal tracking-tight text-[#E6E8E8] leading-[1.02]">
+              Exchange craft. <br />
+              <span className="italic text-[#C46A6D]">Without cash.</span>
+            </h1>
 
-              <div>
-                <label className="block text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">
-                  I Want in Return:
-                </label>
-                <select
-                  value={skillRequest}
-                  onChange={(e) => setSkillRequest(e.target.value)}
-                  className="w-full p-2.5 rounded-xl border border-border bg-background text-foreground text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
-                >
-                  <option value="UI/UX Design">UI/UX Design & Design Systems</option>
-                  <option value="Video Editing">Video Editing (Longform + Shorts)</option>
-                  <option value="3D Motion Graphics">3D Motion Graphics & Intros</option>
-                  <option value="Audio">Audio Mixing & Mastering</option>
-                </select>
-              </div>
-            </div>
+            <p className="text-base sm:text-lg md:text-xl text-[#CFC7C1] font-normal leading-relaxed max-w-xl">
+              SkillSwap is an editorial platform where video editors, art directors, copywriters, and sound designers collaborate through mathematically verified barter equivalence.
+            </p>
 
-            <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
-              <span>Dynamic Labor Effort Units & Scarcity indexed</span>
-              <Link href={`/trade?offer=${encodeURIComponent(skillOffer)}&need=${encodeURIComponent(skillRequest)}`} className="text-primary font-bold hover:underline flex items-center gap-1">
-                <span>Evaluate Full Scope</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+            {/* Primary & Secondary CTA */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <Link
+                href="/marketplace"
+                className="px-8 py-4 rounded-[16px] bg-[#C46A6D] text-white text-base font-medium hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ease-out shadow-sm text-center flex items-center justify-center gap-2 group"
+              >
+                <span>Explore Marketplace</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
+
+              <Link
+                href="/trade"
+                className="px-8 py-4 rounded-[16px] bg-[#2E2E2E] text-[#E6E8E8] border border-[#3A3A3A] hover:border-[#7A7A7A] hover:bg-[#262626] text-base font-medium transition-all duration-200 ease-out text-center flex items-center justify-center gap-2"
+              >
+                <Compass className="w-4 h-4 text-[#B4887A]" />
+                <span>Barter Calculator</span>
+              </Link>
+            </div>
+
+            {/* Micro details */}
+            <div className="pt-4 flex items-center gap-8 text-xs text-[#CFC7C1]">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#5E8A67]" />
+                <span>Zero signup gating</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#5E8A67]" />
+                <span>Deterministic REST API</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#5E8A67]" />
+                <span>DP1 Rejection Protocol</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Hero Column: Editorial Card with Warm Architectural Geometry */}
+          <div className="lg:col-span-5">
+            <div className="rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-8 sm:p-10 space-y-8 shadow-xl relative overflow-hidden">
+              {/* Subtle Architectural Arc Indicator */}
+              <div className="flex items-center justify-between pb-6 border-b border-[#3A3A3A]">
+                <div>
+                  <span className="font-serif text-2xl font-normal text-[#E6E8E8]">Curated Disciplines</span>
+                  <p className="text-xs text-[#CFC7C1] mt-0.5">Active practitioners ready to collaborate</p>
+                </div>
+                <span className="font-mono text-xs px-2.5 py-1 rounded-md bg-[#262626] text-[#B4887A] border border-[#444444]">
+                  14+ Gigs
+                </span>
+              </div>
+
+              {/* Discipline Rows */}
+              <div className="space-y-3.5">
+                {EDITORIAL_DISCIPLINES.map((d) => (
+                  <Link
+                    key={d.name}
+                    href={`/marketplace?category=${encodeURIComponent(d.category)}`}
+                    className="flex items-center justify-between p-3.5 rounded-[16px] bg-[#262626] hover:bg-[#1F2224] border border-[#3A3A3A] hover:border-[#7A7A7A]/50 transition-all duration-200 ease-out group"
+                  >
+                    <div>
+                      <p className="text-sm font-medium text-[#E6E8E8] group-hover:text-[#C46A6D] transition-colors">
+                        {d.name}
+                      </p>
+                      <p className="text-[11px] text-[#CFC7C1]">{d.category}</p>
+                    </div>
+                    <span className="font-mono text-[11px] text-[#CFC7C1] group-hover:text-[#E6E8E8]">
+                      {d.count} &rarr;
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="pt-2 text-center">
+                <Link
+                  href="/gigs/new"
+                  className="text-xs font-medium text-[#B4887A] hover:text-[#C46A6D] transition-colors inline-flex items-center gap-1"
+                >
+                  <span>Are you a creator? List your service here</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 🧩 BENTO GRID SHOWCASE */}
-      <section className="px-4 sm:px-6 py-20 max-w-7xl mx-auto w-full">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs font-bold text-primary uppercase tracking-widest px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-            Engineered For The New Creator Economy
-          </span>
-          <h2 className="text-3xl sm:text-5xl font-black text-foreground tracking-tight">
-            Built Different. <span className="gradient-text">Designed to Wow.</span>
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Every feature is architected for zero-friction evaluation, lightning-fast interactivity, and transparent creative exchange.
-          </p>
-        </div>
+      {/* Editorial Pillars Section — 12-Column Grid */}
+      <section className="border-t border-[#3A3A3A] py-24 px-4 sm:px-8 bg-[#262626]/30">
+        <div className="max-w-[1280px] mx-auto space-y-16">
+          <div className="max-w-xl space-y-3">
+            <span className="text-xs font-medium tracking-widest text-[#B4887A] uppercase">
+              Platform Architecture
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-normal text-[#E6E8E8] tracking-tight">
+              Crafted for trust, reciprocity, and velocity.
+            </h2>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {BENTO_CARDS.map((card, idx) => {
-            const Icon = card.icon;
-            return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {CURATED_PILLARS.map((pillar) => (
               <div
-                key={idx}
-                className={`p-8 rounded-3xl border border-border bg-card relative overflow-hidden transition-all duration-300 neon-glow-hover flex flex-col justify-between group ${card.border}`}
+                key={pillar.num}
+                className="rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-7 flex flex-col justify-between space-y-6 transition-transform duration-200 ease-out hover:-translate-y-1 hover:border-[#7A7A7A]/40"
               >
-                {/* Background Subtle Gradient Glow */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-40 group-hover:opacity-80 transition-opacity pointer-events-none`}
-                />
-
-                <div className="relative z-10 space-y-4">
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
-                      {card.tag}
-                    </span>
-                    <span className="text-xs font-semibold text-muted-foreground bg-muted/60 px-2.5 py-1 rounded-lg border border-border/60">
-                      {card.stat}
-                    </span>
+                    <span className="font-mono text-sm text-[#B4887A] font-semibold">{pillar.num}</span>
+                    <span className="text-[11px] uppercase tracking-wider text-[#CFC7C1]">{pillar.subtitle}</span>
                   </div>
 
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-primary/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <Icon className="w-6 h-6" />
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
-                    {card.title}
+                  <h3 className="font-serif text-xl font-normal text-[#E6E8E8] leading-snug">
+                    {pillar.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {card.description}
+                  <p className="text-xs text-[#CFC7C1] leading-relaxed">
+                    {pillar.description}
                   </p>
                 </div>
 
-                <div className="relative z-10 pt-6 mt-4 border-t border-border/60 flex items-center justify-between">
+                <div className="pt-4 border-t border-[#3A3A3A]">
                   <Link
-                    href={card.link}
-                    className="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:underline group-hover:translate-x-1 transition-transform"
+                    href={pillar.link}
+                    className="text-xs font-medium text-[#C46A6D] hover:underline inline-flex items-center gap-1"
                   >
-                    <span>{card.linkText}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span>{pillar.linkText}</span>
+                    <ArrowRight className="w-3 h-3" />
                   </Link>
-                  <span className="text-[11px] text-muted-foreground font-mono">
-                    Ready to Test &rarr;
-                  </span>
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 🔮 COMMUNITY STATS BAR */}
-      <section className="px-4 sm:px-6 py-12 border-y border-border/70 bg-muted/20">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div>
-            <p className="text-4xl sm:text-5xl font-black gradient-text">14+</p>
-            <p className="text-xs sm:text-sm text-muted-foreground font-semibold mt-1">Pre-Seeded Gigs</p>
+      {/* Metrics Section with JetBrains Mono numbers */}
+      <section className="border-t border-[#3A3A3A] py-16 px-4 sm:px-8 bg-[#1F2224]">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="space-y-1.5">
+            <p className="font-mono text-3xl sm:text-4xl font-semibold text-[#E6E8E8]">14+</p>
+            <p className="text-xs text-[#CFC7C1]">Curated Gigs Seeded</p>
           </div>
-          <div>
-            <p className="text-4xl sm:text-5xl font-black gradient-text">100%</p>
-            <p className="text-xs sm:text-sm text-muted-foreground font-semibold mt-1">Zero Auth Gating</p>
+          <div className="space-y-1.5">
+            <p className="font-mono text-3xl sm:text-4xl font-semibold text-[#5E8A67]">100%</p>
+            <p className="text-xs text-[#CFC7C1]">Zero Auth Friction</p>
           </div>
-          <div>
-            <p className="text-4xl sm:text-5xl font-black gradient-text">5 / 5</p>
-            <p className="text-xs sm:text-sm text-muted-foreground font-semibold mt-1">Required Features Built</p>
+          <div className="space-y-1.5">
+            <p className="font-mono text-3xl sm:text-4xl font-semibold text-[#B4887A]">5 / 5</p>
+            <p className="text-xs text-[#CFC7C1]">Mandatory Brief Features</p>
           </div>
-          <div>
-            <p className="text-4xl sm:text-5xl font-black gradient-text">&lt; 100ms</p>
-            <p className="text-xs sm:text-sm text-muted-foreground font-semibold mt-1">Instant REST Response</p>
+          <div className="space-y-1.5">
+            <p className="font-mono text-3xl sm:text-4xl font-semibold text-[#C46A6D]">&lt; 100ms</p>
+            <p className="text-xs text-[#CFC7C1]">Deterministic REST Latency</p>
           </div>
         </div>
       </section>

@@ -5,21 +5,18 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Search,
-  Filter,
   ArrowUpDown,
-  Sparkles,
   CheckCircle2,
   Calendar,
-  Clock,
-  Send,
   X,
   PlusCircle,
-  ExternalLink,
-  ShieldCheck,
-  Zap,
-  BookmarkCheck,
-  AlertCircle,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  User,
+  SlidersHorizontal,
+  Clock,
+  Send,
+  AlertCircle
 } from "lucide-react";
 import { useDemoRole } from "@/lib/role-context";
 
@@ -47,13 +44,20 @@ interface BookingConfirmation {
   rate: string;
 }
 
-const CATEGORIES = ["All", "Design", "Video", "Writing", "Audio", "Tutoring"];
+const CATEGORIES = [
+  { id: "All", label: "All Craft" },
+  { id: "Design", label: "Brand & UI/UX" },
+  { id: "Video", label: "Motion & Editing" },
+  { id: "Writing", label: "Strategy & Copy" },
+  { id: "Audio", label: "Sound & Music" },
+  { id: "Tutoring", label: "1-on-1 Mentorship" },
+];
 
 const SORT_OPTIONS = [
   { value: "composite", label: "Composite Recommended" },
   { value: "low_to_high", label: "Rate: Low to High" },
   { value: "high_to_low", label: "Rate: High to Low" },
-  { value: "newest", label: "Newest" },
+  { value: "newest", label: "Newest Listings" },
 ];
 
 function MarketplaceContent() {
@@ -121,14 +125,13 @@ function MarketplaceContent() {
   useEffect(() => {
     const timer = setTimeout(() => {
       fetchGigs();
-    }, 200);
+    }, 150);
     return () => clearTimeout(timer);
   }, [fetchGigs]);
 
   const handleOpenBooking = (gig: Gig) => {
     setSelectedGig(gig);
     setBookingErrors({});
-    // Default delivery date: 7 days from today
     const d = new Date();
     d.setDate(d.getDate() + 7);
     setRequestedDate(d.toISOString().split("T")[0]);
@@ -145,7 +148,7 @@ function MarketplaceContent() {
       errs.clientName = "Client name is required";
     }
     if (!projectNotes.trim()) {
-      errs.projectNotes = "Project scope and notes are required";
+      errs.projectNotes = "Project scope and deliverables are required";
     } else if (projectNotes.trim().length < 10) {
       errs.projectNotes = "Please provide at least 10 characters of project details";
     }
@@ -197,64 +200,63 @@ function MarketplaceContent() {
   };
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 py-10 max-w-7xl mx-auto">
+    <div className="min-h-screen px-4 sm:px-8 py-16 max-w-[1280px] mx-auto">
       {/* Newly created toast */}
       {showCreatedToast && (
-        <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-between animate-slide-up">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-            <span>Your new gig has been successfully published to the marketplace!</span>
+        <div className="mb-8 p-4 rounded-[16px] bg-[#2E2E2E] border border-[#5E8A67]/50 text-[#E6E8E8] flex items-center justify-between">
+          <div className="flex items-center gap-3 text-sm">
+            <span className="w-2 h-2 rounded-full bg-[#5E8A67]" />
+            <span className="font-medium">Your service listing has been successfully published to the marketplace.</span>
           </div>
           <button
             onClick={() => setShowCreatedToast(false)}
-            className="text-emerald-400/80 hover:text-emerald-400 p-1"
+            className="text-[#CFC7C1] hover:text-[#E6E8E8] p-1"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Header section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            Feature 2: Browse & Search &middot; Feature 3: Book a Gig
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
-            Explore Creative Gigs
+      {/* Editorial Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-8 border-b border-[#3A3A3A]">
+        <div className="space-y-3 max-w-2xl">
+          <span className="text-xs font-medium tracking-widest text-[#B4887A] uppercase">
+            Curated Marketplace
+          </span>
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-normal text-[#E6E8E8] tracking-tight">
+            Creative Services & Gigs
           </h1>
-          <p className="text-muted-foreground text-base sm:text-lg mt-1.5">
-            Discover verified creators in design, video, audio, writing, and tutoring. Book directly with zero platform fee.
+          <p className="text-sm sm:text-base text-[#CFC7C1] font-normal leading-relaxed">
+            Browse independent creative practitioners in brand identity, video editing, sound design, and long-form strategy.
           </p>
         </div>
 
         <Link
           href="/gigs/new"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shadow-sm shrink-0 self-start md:self-auto"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-[16px] bg-[#C46A6D] text-white text-sm font-medium hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ease-out shadow-sm shrink-0 self-start md:self-auto"
         >
           <PlusCircle className="w-4 h-4" />
-          Post a Gig
+          <span>Post a Service</span>
         </Link>
       </div>
 
-      {/* Search and Filters Bar */}
-      <div className="space-y-4 mb-8">
-        <div className="flex flex-col sm:flex-row gap-3">
-          {/* Search Input */}
+      {/* Search & Filter Controls */}
+      <div className="space-y-6 mb-12">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Filled Style Search Input */}
           <div className="relative flex-1">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#CFC7C1]" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by keywords, title, tools, or description..."
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm"
+              placeholder="Search by keywords, discipline, tools, or practitioner name..."
+              className="w-full pl-11 pr-10 py-3.5 rounded-[14px] bg-[#262626] border border-[#444444] text-[#E6E8E8] placeholder-[#CFC7C1]/40 text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200"
             />
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#CFC7C1] hover:text-[#E6E8E8]"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -262,13 +264,13 @@ function MarketplaceContent() {
           </div>
 
           {/* Dynamic Sorting Dropdown */}
-          <div className="relative min-w-[220px]">
+          <div className="relative min-w-[240px]">
             <div className="relative">
-              <ArrowUpDown className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+              <ArrowUpDown className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#CFC7C1] pointer-events-none" />
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="w-full pl-10 pr-8 py-3 rounded-xl border border-border bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all text-sm appearance-none cursor-pointer"
+                className="w-full pl-11 pr-10 py-3.5 rounded-[14px] bg-[#262626] border border-[#444444] text-[#E6E8E8] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-all duration-200 appearance-none cursor-pointer"
               >
                 {SORT_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -276,26 +278,16 @@ function MarketplaceContent() {
                   </option>
                 ))}
               </select>
-              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-xs">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#CFC7C1] text-xs">
                 ▼
               </div>
             </div>
           </div>
         </div>
 
-        {/* Category Filter Pills with Emojis & Neon Glow */}
+        {/* Editorial Category Filter Pills */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1 mr-1">
-            <Filter className="w-3.5 h-3.5" /> Category:
-          </span>
-          {[
-            { id: "All", label: "✨ All Gigs" },
-            { id: "Design", label: "🎨 UI/UX & Design" },
-            { id: "Video", label: "🎬 Video & Motion" },
-            { id: "Writing", label: "✍️ Copy & Writing" },
-            { id: "Audio", label: "🎧 Sound & Music" },
-            { id: "Tutoring", label: "🧠 1-on-1 Mentorship" },
-          ].map((cat) => {
+          {CATEGORIES.map((cat) => {
             const isSelected =
               category === cat.id ||
               (cat.id === "Video" && category === "Video Editing") ||
@@ -304,153 +296,138 @@ function MarketplaceContent() {
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border flex items-center gap-1.5 ${
+                className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ease-out border ${
                   isSelected
-                    ? "bg-gradient-to-r from-violet-600 to-cyan-600 text-white border-transparent shadow-md shadow-violet-500/25 scale-105"
-                    : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground hover:bg-muted/70"
+                    ? "bg-[#C46A6D] text-white border-[#C46A6D] shadow-sm"
+                    : "bg-[#2E2E2E] text-[#CFC7C1] border-[#3A3A3A] hover:border-[#7A7A7A] hover:text-[#E6E8E8]"
                 }`}
               >
-                <span>{cat.label}</span>
+                {cat.label}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Gigs Grid */}
+      {/* SKELETON LOADING (Instead of Spinners) */}
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <div
               key={n}
-              className="p-6 rounded-2xl border border-border bg-card/50 space-y-4 animate-pulse"
+              className="rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-8 space-y-6 skeleton-box"
             >
-              <div className="flex justify-between">
-                <div className="w-20 h-5 bg-muted rounded-full" />
-                <div className="w-16 h-5 bg-muted rounded-md" />
+              <div className="flex justify-between items-center">
+                <div className="w-24 h-4 bg-[#262626] rounded-md" />
+                <div className="w-16 h-4 bg-[#262626] rounded-md" />
               </div>
-              <div className="w-3/4 h-6 bg-muted rounded-md" />
-              <div className="w-full h-12 bg-muted rounded-md" />
-              <div className="pt-4 border-t border-border flex justify-between items-center">
-                <div className="w-24 h-8 bg-muted rounded-full" />
-                <div className="w-20 h-8 bg-muted rounded-lg" />
+              <div className="w-4/5 h-7 bg-[#262626] rounded-md" />
+              <div className="space-y-2">
+                <div className="w-full h-3 bg-[#262626] rounded-md" />
+                <div className="w-3/4 h-3 bg-[#262626] rounded-md" />
+              </div>
+              <div className="pt-6 border-t border-[#3A3A3A] flex justify-between items-center">
+                <div className="w-28 h-4 bg-[#262626] rounded-md" />
+                <div className="w-20 h-8 bg-[#262626] rounded-[16px]" />
               </div>
             </div>
           ))}
         </div>
       ) : gigs.length === 0 ? (
-        <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-border bg-card/40">
-          <p className="text-lg font-semibold text-foreground">No creative gigs match your query</p>
-          <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-            Try adjusting your search terms, changing the category filter, or post the first gig in this category.
+        /* Editorial Empty State with Next Action */
+        <div className="rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-16 text-center max-w-xl mx-auto space-y-4">
+          <div className="w-12 h-12 rounded-full bg-[#262626] border border-[#444444] mx-auto flex items-center justify-center text-[#B4887A]">
+            <SlidersHorizontal className="w-5 h-5" />
+          </div>
+          <h2 className="font-serif text-2xl font-normal text-[#E6E8E8]">
+            No services match this criteria
+          </h2>
+          <p className="text-xs text-[#CFC7C1] leading-relaxed max-w-sm mx-auto">
+            Try broadening your search term or exploring another creative discipline.
           </p>
-          <div className="flex justify-center gap-3 mt-5">
+          <div className="pt-2 flex justify-center gap-3">
             <button
               onClick={() => {
                 setSearch("");
                 setCategory("All");
               }}
-              className="px-4 py-2 rounded-xl bg-muted text-foreground text-sm font-semibold hover:bg-muted/80 transition-colors"
+              className="px-5 py-2.5 rounded-[16px] bg-[#262626] text-[#E6E8E8] border border-[#444444] text-xs font-medium hover:bg-[#1F2224] transition-colors"
             >
               Reset Filters
             </button>
             <Link
               href="/gigs/new"
-              className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+              className="px-5 py-2.5 rounded-[16px] bg-[#C46A6D] text-white text-xs font-medium hover:bg-[#B55B5E] transition-colors"
             >
-              Post a Gig
+              List a Service
             </Link>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        /* Editorial Cards (Radius 24px, Bg #2E2E2E, 1px border #3A3A3A, 4px lift on hover) */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {gigs.map((gig) => {
             const isHighlighted = gig.id === highlightGigId;
             return (
               <div
                 key={gig.id}
                 id={`gig-card-${gig.id}`}
-                className={`group flex flex-col justify-between p-6 rounded-3xl border bg-card/90 backdrop-blur-xl transition-all duration-300 relative overflow-hidden neon-glow-hover ${
+                className={`rounded-[24px] bg-[#2E2E2E] border transition-all duration-200 ease-out hover:-translate-y-1 p-8 flex flex-col justify-between space-y-6 ${
                   isHighlighted
-                    ? "border-primary ring-2 ring-primary/60 shadow-xl shadow-primary/20 scale-[1.02]"
-                    : "border-border/80 hover:border-primary/50"
+                    ? "border-[#C46A6D] ring-1 ring-[#C46A6D]/40"
+                    : "border-[#3A3A3A] hover:border-[#7A7A7A]/50"
                 }`}
               >
-                {/* Top Subtle Cyber Glow Accent */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                <div>
-                  {/* Category badge & Rate */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/25">
-                        {gig.category}
-                      </span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-muted text-muted-foreground border border-border/60">
-                        {gig.category.toLowerCase().includes("video")
-                          ? "⚡ 4K Motion"
-                          : gig.category.toLowerCase().includes("design")
-                          ? "💎 Figma Native"
-                          : gig.category.toLowerCase().includes("audio")
-                          ? "🎵 Spatial Mix"
-                          : gig.category.toLowerCase().includes("writing")
-                          ? "🔥 High ROI"
-                          : "🌟 1-on-1 Mentorship"}
-                      </span>
-                    </div>
-                    <span className="text-sm font-black text-foreground bg-muted/80 px-2.5 py-1 rounded-xl border border-border/80 shadow-sm">
+                <div className="space-y-4">
+                  {/* Category Badge & JetBrains Mono Rate */}
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[11px] font-medium tracking-wider uppercase text-[#B4887A]">
+                      {gig.category}
+                    </span>
+                    <span className="font-mono text-xs font-semibold text-[#E6E8E8] bg-[#262626] px-2.5 py-1 rounded-md border border-[#444444]">
                       {gig.rate}
                     </span>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug mb-2">
+                  {/* Editorial Serif Heading */}
+                  <h3 className="font-serif text-2xl font-normal text-[#E6E8E8] leading-snug line-clamp-2 hover:text-[#C46A6D] transition-colors">
                     {gig.title}
                   </h3>
 
-                  {/* Description snippet */}
-                  <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-4">
+                  {/* Clean Body Excerpt */}
+                  <p className="text-xs text-[#CFC7C1] leading-relaxed line-clamp-3">
                     {gig.description}
                   </p>
                 </div>
 
-                {/* Creator info & Actions */}
-                <div className="pt-4 border-t border-border/70 mt-2">
-                  <div className="flex items-center justify-between gap-2 mb-3.5">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 flex items-center justify-center text-white text-xs font-black shadow-md shadow-violet-500/20 shrink-0 group-hover:scale-105 transition-transform">
-                        {gig.creator_name.substring(0, 2).toUpperCase()}
-                      </div>
-                      <div className="text-xs">
-                        <p className="font-bold text-foreground line-clamp-1">{gig.creator_name}</p>
-                        <p className="text-muted-foreground flex items-center gap-1 text-[11px] font-medium">
-                          <Zap className="w-3 h-3 text-amber-400 fill-amber-400" />
-                          <span>{Math.round((gig.responsiveness_rate || 0.95) * 100)}% Fast Reply</span>
-                        </p>
-                      </div>
+                {/* Creator Footer with 16px Rounded Button */}
+                <div className="pt-6 border-t border-[#3A3A3A] space-y-4">
+                  <div className="flex items-center justify-between text-xs">
+                    <div>
+                      <p className="font-medium text-[#E6E8E8]">{gig.creator_name}</p>
+                      <p className="font-mono text-[11px] text-[#5E8A67] mt-0.5">
+                        {Math.round((gig.responsiveness_rate || 0.95) * 100)}% responsiveness
+                      </p>
                     </div>
-
-                    <div className="text-right">
-                      <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 block">
-                        {gig.completed_bookings || 12} trades done
-                      </span>
-                    </div>
+                    <span className="font-mono text-[11px] text-[#CFC7C1]">
+                      {gig.completed_bookings || 12} completed
+                    </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={() => handleOpenBooking(gig)}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-primary text-primary-foreground font-bold text-xs sm:text-sm hover:opacity-95 transition-all flex items-center justify-center gap-1.5 shadow-md shadow-violet-600/25 active:scale-95 group-hover:scale-[1.01]"
+                      className="flex-1 py-3 px-5 rounded-[16px] bg-[#C46A6D] text-white text-xs font-medium hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ease-out shadow-sm flex items-center justify-center gap-2"
                     >
-                      <span>Book Now</span>
-                      <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-0.5 transition-transform" />
+                      <span>Book Service</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                     <Link
                       href={`/trade?gigId=${gig.id}`}
-                      className="p-2.5 rounded-xl border border-border/80 hover:border-primary/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center group/btn"
-                      title="Request an AI Barter Swap for this gig"
+                      className="p-3 rounded-[16px] bg-[#262626] border border-[#444444] text-[#CFC7C1] hover:text-[#E6E8E8] hover:border-[#7A7A7A] transition-colors"
+                      title="Simulate barter equivalence"
                     >
-                      <Sparkles className="w-4 h-4 text-violet-400 group-hover/btn:scale-110 transition-transform" />
+                      <Sparkles className="w-3.5 h-3.5 text-[#B4887A]" />
                     </Link>
                   </div>
                 </div>
@@ -460,44 +437,40 @@ function MarketplaceContent() {
         </div>
       )}
 
-      {/* Feature 3: Book a Gig Modal */}
+      {/* EDITORIAL BOOKING MODAL */}
       {selectedGig && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl p-6 sm:p-8 space-y-5 animate-slide-up">
-            {/* Modal Header */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1F2224]/80 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-8 space-y-6 shadow-2xl">
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-                  Feature 3 &middot; Book a Gig
+              <div className="space-y-1">
+                <span className="text-[11px] uppercase tracking-wider text-[#B4887A] font-medium">
+                  Direct Booking Form
                 </span>
-                <h2 className="text-xl font-bold text-foreground mt-0.5">
-                  Book: {selectedGig.title}
+                <h2 className="font-serif text-2xl font-normal text-[#E6E8E8]">
+                  {selectedGig.title}
                 </h2>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Offered by <span className="font-semibold text-foreground">{selectedGig.creator_name}</span> &middot; Rate: <span className="font-semibold text-foreground">{selectedGig.rate}</span>
+                <p className="text-xs text-[#CFC7C1]">
+                  Offered by <strong className="text-[#E6E8E8]">{selectedGig.creator_name}</strong> &middot; Rate: <span className="font-mono text-[#E6E8E8]">{selectedGig.rate}</span>
                 </p>
               </div>
               <button
                 onClick={handleCloseBooking}
-                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="p-2 rounded-xl text-[#CFC7C1] hover:text-[#E6E8E8] hover:bg-[#262626] transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {bookingErrors.form && (
-              <div className="p-3.5 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{bookingErrors.form}</span>
+              <div className="p-3 rounded-[14px] bg-[#B85C5C]/10 border border-[#B85C5C]/30 text-[#B85C5C] text-xs">
+                {bookingErrors.form}
               </div>
             )}
 
-            {/* Booking Form */}
             <form onSubmit={handleSubmitBooking} className="space-y-4">
-              {/* Client Name */}
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Client Name <span className="text-destructive">*</span>
+                <label className="block text-xs font-medium text-[#CFC7C1] mb-1.5">
+                  Client Name <span className="text-[#B85C5C]">*</span>
                 </label>
                 <input
                   type="text"
@@ -506,22 +479,16 @@ function MarketplaceContent() {
                     setClientName(e.target.value);
                     if (bookingErrors.clientName) setBookingErrors((prev) => ({ ...prev, clientName: "" }));
                   }}
-                  placeholder="e.g. Demo Client or your name"
-                  className={`w-full px-3.5 py-2.5 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 transition-all ${
-                    bookingErrors.clientName
-                      ? "border-destructive focus:ring-destructive/30"
-                      : "border-border focus:ring-primary/40 focus:border-primary"
-                  }`}
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#262626] border border-[#444444] text-[#E6E8E8] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-colors"
                 />
                 {bookingErrors.clientName && (
-                  <p className="text-destructive text-[11px] mt-1">{bookingErrors.clientName}</p>
+                  <p className="text-[#B85C5C] text-[11px] mt-1">{bookingErrors.clientName}</p>
                 )}
               </div>
 
-              {/* Project Scope / Notes */}
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Project Scope & Notes <span className="text-destructive">*</span>
+                <label className="block text-xs font-medium text-[#CFC7C1] mb-1.5">
+                  Project Scope & Deliverables <span className="text-[#B85C5C]">*</span>
                 </label>
                 <textarea
                   rows={4}
@@ -530,68 +497,46 @@ function MarketplaceContent() {
                     setProjectNotes(e.target.value);
                     if (bookingErrors.projectNotes) setBookingErrors((prev) => ({ ...prev, projectNotes: "" }));
                   }}
-                  placeholder="Describe your project requirements, deliverables, reference links, and any specific expectations..."
-                  className={`w-full p-3.5 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 transition-all ${
-                    bookingErrors.projectNotes
-                      ? "border-destructive focus:ring-destructive/30"
-                      : "border-border focus:ring-primary/40 focus:border-primary"
-                  }`}
+                  placeholder="Outline requested milestones, formats, reference links, and expectations..."
+                  className="w-full p-4 rounded-[14px] bg-[#262626] border border-[#444444] text-[#E6E8E8] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-colors"
                 />
                 {bookingErrors.projectNotes && (
-                  <p className="text-destructive text-[11px] mt-1">{bookingErrors.projectNotes}</p>
+                  <p className="text-[#B85C5C] text-[11px] mt-1">{bookingErrors.projectNotes}</p>
                 )}
               </div>
 
-              {/* Requested Delivery Date */}
               <div>
-                <label className="block text-xs font-semibold text-foreground mb-1.5">
-                  Requested Delivery Date <span className="text-destructive">*</span>
+                <label className="block text-xs font-medium text-[#CFC7C1] mb-1.5">
+                  Requested Delivery Date <span className="text-[#B85C5C]">*</span>
                 </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    value={requestedDate}
-                    onChange={(e) => {
-                      setRequestedDate(e.target.value);
-                      if (bookingErrors.requestedDate) setBookingErrors((prev) => ({ ...prev, requestedDate: "" }));
-                    }}
-                    className={`w-full px-3.5 py-2.5 rounded-xl border bg-background text-foreground text-sm focus:outline-none focus:ring-2 transition-all ${
-                      bookingErrors.requestedDate
-                        ? "border-destructive focus:ring-destructive/30"
-                        : "border-border focus:ring-primary/40 focus:border-primary"
-                    }`}
-                  />
-                </div>
+                <input
+                  type="date"
+                  value={requestedDate}
+                  onChange={(e) => {
+                    setRequestedDate(e.target.value);
+                    if (bookingErrors.requestedDate) setBookingErrors((prev) => ({ ...prev, requestedDate: "" }));
+                  }}
+                  className="w-full px-4 py-3 rounded-[14px] bg-[#262626] border border-[#444444] text-[#E6E8E8] text-sm focus:border-[#C46A6D] focus:ring-1 focus:ring-[#C46A6D] focus:outline-none transition-colors"
+                />
                 {bookingErrors.requestedDate && (
-                  <p className="text-destructive text-[11px] mt-1">{bookingErrors.requestedDate}</p>
+                  <p className="text-[#B85C5C] text-[11px] mt-1">{bookingErrors.requestedDate}</p>
                 )}
               </div>
 
-              {/* Modal Actions */}
-              <div className="pt-2 flex items-center justify-end gap-2.5">
+              <div className="pt-4 flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={handleCloseBooking}
-                  className="px-4 py-2.5 rounded-xl border border-border text-foreground text-sm font-medium hover:bg-muted transition-colors"
+                  className="px-5 py-2.5 rounded-[16px] text-xs font-medium text-[#CFC7C1] hover:text-[#E6E8E8] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submittingBooking}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+                  className="px-6 py-3 rounded-[16px] bg-[#C46A6D] text-white text-xs font-medium hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ease-out shadow-sm disabled:opacity-50"
                 >
-                  {submittingBooking ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                      <span>Sending Request...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-3.5 h-3.5" />
-                      <span>Submit Booking Request</span>
-                    </>
-                  )}
+                  {submittingBooking ? "Creating Booking..." : "Submit Booking"}
                 </button>
               </div>
             </form>
@@ -599,56 +544,55 @@ function MarketplaceContent() {
         </div>
       )}
 
-      {/* Feature 3: Immediate Booking Confirmation Dialogue */}
+      {/* EDITORIAL CONFIRMATION DIALOGUE */}
       {confirmation && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl p-6 sm:p-8 space-y-5 text-center animate-slide-up">
-            <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
-              <CheckCircle2 className="w-8 h-8" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1F2224]/80 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-[24px] bg-[#2E2E2E] border border-[#3A3A3A] p-8 space-y-6 text-center shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-[#5E8A67]/15 border border-[#5E8A67]/40 flex items-center justify-center mx-auto text-[#5E8A67]">
+              <CheckCircle2 className="w-6 h-6" />
             </div>
 
-            <div>
-              <h3 className="text-xl font-black text-foreground">Booking Request Submitted!</h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Your booking request is now active with initial status <span className="text-amber-400 font-semibold">Pending</span>.
+            <div className="space-y-1">
+              <span className="text-[11px] uppercase tracking-wider text-[#B4887A] font-medium">
+                Booking Request Active
+              </span>
+              <h3 className="font-serif text-2xl font-normal text-[#E6E8E8]">
+                Inquiry Submitted
+              </h3>
+              <p className="text-xs text-[#CFC7C1]">
+                Your booking request is now registered with initial status <span className="text-[#C89B53] font-medium">Pending</span>.
               </p>
             </div>
 
-            {/* Reference ID Card */}
-            <div className="p-4 rounded-xl bg-muted/50 border border-border text-left space-y-2 text-xs">
+            <div className="p-4 rounded-[16px] bg-[#262626] border border-[#3A3A3A] text-left space-y-2 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Booking Reference ID:</span>
-                <span className="font-mono font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
+                <span className="text-[#CFC7C1]">Reference ID:</span>
+                <span className="font-mono font-medium text-[#B4887A]">
                   {confirmation.id}
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Gig:</span>
-                <span className="font-semibold text-foreground text-right line-clamp-1">{confirmation.gig_title}</span>
+                <span className="text-[#CFC7C1]">Service:</span>
+                <span className="font-medium text-[#E6E8E8] line-clamp-1">{confirmation.gig_title}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Client:</span>
-                <span className="font-semibold text-foreground">{confirmation.client_name}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-muted-foreground">Requested Delivery:</span>
-                <span className="font-semibold text-foreground">{confirmation.requested_date}</span>
+                <span className="text-[#CFC7C1]">Target Date:</span>
+                <span className="font-mono text-[#E6E8E8]">{confirmation.requested_date}</span>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2.5 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Link
                 href="/my-bookings"
-                className="flex-1 py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 shadow-sm"
+                className="flex-1 py-3 px-5 rounded-[16px] bg-[#C46A6D] text-white text-xs font-medium hover:bg-[#B55B5E] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 ease-out text-center shadow-sm"
               >
-                <BookmarkCheck className="w-4 h-4" />
-                <span>View in My Bookings</span>
+                View in My Bookings
               </Link>
               <button
                 onClick={() => setConfirmation(null)}
-                className="py-2.5 px-4 rounded-xl border border-border text-foreground font-semibold text-xs sm:text-sm hover:bg-muted transition-colors"
+                className="py-3 px-5 rounded-[16px] bg-[#262626] border border-[#3A3A3A] text-[#CFC7C1] hover:text-[#E6E8E8] text-xs font-medium transition-colors"
               >
-                Done
+                Close
               </button>
             </div>
           </div>
@@ -663,7 +607,7 @@ export default function MarketplacePage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <div className="w-8 h-8 rounded-full border-2 border-[#C46A6D] border-t-transparent animate-spin" />
         </div>
       }
     >
