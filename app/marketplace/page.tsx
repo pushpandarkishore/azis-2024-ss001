@@ -18,7 +18,8 @@ import {
   ShieldCheck,
   Zap,
   BookmarkCheck,
-  AlertCircle
+  AlertCircle,
+  ArrowRight
 } from "lucide-react";
 import { useDemoRole } from "@/lib/role-context";
 
@@ -282,27 +283,34 @@ function MarketplaceContent() {
           </div>
         </div>
 
-        {/* Category Filter Pills */}
+        {/* Category Filter Pills with Emojis & Neon Glow */}
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1 mr-1">
             <Filter className="w-3.5 h-3.5" /> Category:
           </span>
-          {CATEGORIES.map((cat) => {
+          {[
+            { id: "All", label: "✨ All Gigs" },
+            { id: "Design", label: "🎨 UI/UX & Design" },
+            { id: "Video", label: "🎬 Video & Motion" },
+            { id: "Writing", label: "✍️ Copy & Writing" },
+            { id: "Audio", label: "🎧 Sound & Music" },
+            { id: "Tutoring", label: "🧠 1-on-1 Mentorship" },
+          ].map((cat) => {
             const isSelected =
-              category === cat ||
-              (cat === "Video" && category === "Video Editing") ||
-              (cat === "Video Editing" && category === "Video");
+              category === cat.id ||
+              (cat.id === "Video" && category === "Video Editing") ||
+              (cat.id === "Video Editing" && category === "Video");
             return (
               <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                key={cat.id}
+                onClick={() => setCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border flex items-center gap-1.5 ${
                   isSelected
-                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                    : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
+                    ? "bg-gradient-to-r from-violet-600 to-cyan-600 text-white border-transparent shadow-md shadow-violet-500/25 scale-105"
+                    : "bg-card text-muted-foreground border-border hover:border-primary/40 hover:text-foreground hover:bg-muted/70"
                 }`}
               >
-                {cat}
+                <span>{cat.label}</span>
               </button>
             );
           })}
@@ -362,19 +370,35 @@ function MarketplaceContent() {
               <div
                 key={gig.id}
                 id={`gig-card-${gig.id}`}
-                className={`group flex flex-col justify-between p-6 rounded-2xl border bg-card hover:shadow-md transition-all duration-200 relative overflow-hidden ${
+                className={`group flex flex-col justify-between p-6 rounded-3xl border bg-card/90 backdrop-blur-xl transition-all duration-300 relative overflow-hidden neon-glow-hover ${
                   isHighlighted
-                    ? "border-primary ring-2 ring-primary/50 shadow-lg"
-                    : "border-border hover:border-primary/40"
+                    ? "border-primary ring-2 ring-primary/60 shadow-xl shadow-primary/20 scale-[1.02]"
+                    : "border-border/80 hover:border-primary/50"
                 }`}
               >
-                {/* Category badge & Rate */}
+                {/* Top Subtle Cyber Glow Accent */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+
                 <div>
+                  {/* Category badge & Rate */}
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-                      {gig.category}
-                    </span>
-                    <span className="text-sm font-bold text-foreground bg-muted/60 px-2.5 py-0.5 rounded-lg border border-border/60">
+                    <div className="flex items-center gap-1.5">
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/25">
+                        {gig.category}
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-muted text-muted-foreground border border-border/60">
+                        {gig.category.toLowerCase().includes("video")
+                          ? "⚡ 4K Motion"
+                          : gig.category.toLowerCase().includes("design")
+                          ? "💎 Figma Native"
+                          : gig.category.toLowerCase().includes("audio")
+                          ? "🎵 Spatial Mix"
+                          : gig.category.toLowerCase().includes("writing")
+                          ? "🔥 High ROI"
+                          : "🌟 1-on-1 Mentorship"}
+                      </span>
+                    </div>
+                    <span className="text-sm font-black text-foreground bg-muted/80 px-2.5 py-1 rounded-xl border border-border/80 shadow-sm">
                       {gig.rate}
                     </span>
                   </div>
@@ -392,23 +416,23 @@ function MarketplaceContent() {
 
                 {/* Creator info & Actions */}
                 <div className="pt-4 border-t border-border/70 mt-2">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  <div className="flex items-center justify-between gap-2 mb-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 flex items-center justify-center text-white text-xs font-black shadow-md shadow-violet-500/20 shrink-0 group-hover:scale-105 transition-transform">
                         {gig.creator_name.substring(0, 2).toUpperCase()}
                       </div>
                       <div className="text-xs">
-                        <p className="font-semibold text-foreground line-clamp-1">{gig.creator_name}</p>
-                        <p className="text-muted-foreground flex items-center gap-1 text-[11px]">
+                        <p className="font-bold text-foreground line-clamp-1">{gig.creator_name}</p>
+                        <p className="text-muted-foreground flex items-center gap-1 text-[11px] font-medium">
                           <Zap className="w-3 h-3 text-amber-400 fill-amber-400" />
-                          {Math.round((gig.responsiveness_rate || 0.95) * 100)}% responsiveness
+                          <span>{Math.round((gig.responsiveness_rate || 0.95) * 100)}% Fast Reply</span>
                         </p>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-[11px] text-muted-foreground block">
-                        {gig.completed_bookings || 12} completed
+                      <span className="text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20 block">
+                        {gig.completed_bookings || 12} trades done
                       </span>
                     </div>
                   </div>
@@ -416,16 +440,17 @@ function MarketplaceContent() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleOpenBooking(gig)}
-                      className="flex-1 py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-semibold text-xs sm:text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+                      className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-primary text-primary-foreground font-bold text-xs sm:text-sm hover:opacity-95 transition-all flex items-center justify-center gap-1.5 shadow-md shadow-violet-600/25 active:scale-95 group-hover:scale-[1.01]"
                     >
                       <span>Book Now</span>
+                      <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-0.5 transition-transform" />
                     </button>
                     <Link
                       href={`/trade?gigId=${gig.id}`}
-                      className="p-2.5 rounded-xl border border-border hover:border-primary/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                      className="p-2.5 rounded-xl border border-border/80 hover:border-primary/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center group/btn"
                       title="Request an AI Barter Swap for this gig"
                     >
-                      <Sparkles className="w-4 h-4 text-violet-400" />
+                      <Sparkles className="w-4 h-4 text-violet-400 group-hover/btn:scale-110 transition-transform" />
                     </Link>
                   </div>
                 </div>

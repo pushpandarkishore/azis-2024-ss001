@@ -106,8 +106,18 @@
 /* ============================================================
    Gradient & glass utilities (not available via Tailwind alone)
    ============================================================ */
+/* ============================================================
+   Gradient & glass utilities (not available via Tailwind alone)
+   ============================================================ */
 .gradient-text {
-  background: linear-gradient(135deg, hsl(262 83% 68%), hsl(310 70% 60%), hsl(190 80% 55%));
+  background: linear-gradient(135deg, hsl(262 83% 68%), hsl(310 80% 65%), hsl(190 90% 55%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-amber {
+  background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -116,27 +126,48 @@
 .gradient-border {
   background:
     linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-    linear-gradient(135deg, hsl(262 83% 58%), hsl(310 70% 55%)) border-box;
+    linear-gradient(135deg, hsl(262 83% 58%), hsl(310 70% 55%), hsl(190 80% 55%)) border-box;
   border: 1px solid transparent;
 }
 
 .glass {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: hsl(var(--card) / 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: hsl(var(--card) / 0.75);
+}
+
+.glass-glow {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: radial-gradient(circle at 50% 0%, hsl(262 83% 58% / 0.12), transparent 70%), hsl(var(--card) / 0.85);
+  border: 1px solid hsl(262 83% 58% / 0.25);
+}
+
+.neon-glow-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.neon-glow-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -8px hsl(262 83% 58% / 0.35), 0 0 0 1px hsl(262 83% 58% / 0.4);
 }
 
 /* ============================================================
-   Animations
+   Animations & Keyframes
    ============================================================ */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%       { transform: translateY(-10px) rotate(1deg); }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px hsl(262 83% 58% / 0.3); }
-  50%       { box-shadow: 0 0 40px hsl(262 83% 58% / 0.6); }
+  0%, 100% { box-shadow: 0 0 15px hsl(262 83% 58% / 0.25); }
+  50%       { box-shadow: 0 0 35px hsl(262 83% 58% / 0.55); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
 @keyframes shimmer {
@@ -149,9 +180,17 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-float      { animation: float      3s ease-in-out  infinite; }
-.animate-pulse-glow { animation: pulse-glow 2s ease-in-out  infinite; }
-.animate-slide-up   { animation: slide-up   0.4s ease-out both; }
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-float      { animation: float      4s ease-in-out  infinite; }
+.animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out  infinite; }
+.animate-pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.animate-slide-up   { animation: slide-up   0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-marquee    { display: flex; width: max-content; animation: marquee 25s linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
 
 .shimmer {
   background: linear-gradient(
@@ -163,3 +202,4 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
