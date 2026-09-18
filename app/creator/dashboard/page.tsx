@@ -9,8 +9,11 @@ import {
   Clock,
   Calendar,
   Sparkles,
+  AlertCircle,
   TrendingUp,
+  User,
   ArrowRight,
+  ShieldCheck,
   Check,
   X
 } from "lucide-react";
@@ -55,6 +58,7 @@ export default function CreatorDashboardPage() {
   const fetchCreatorBookings = useCallback(async () => {
     setLoading(true);
     try {
+      // Query bookings for creator (default creatorId or demo creator)
       const res = await fetch("/api/bookings?role=creator");
       if (res.ok) {
         const data = await res.json();
@@ -86,10 +90,11 @@ export default function CreatorDashboardPage() {
         throw new Error(data.error || "Failed to accept booking");
       }
 
+      const updated = await res.json();
       setBookings((prev) =>
         prev.map((b) => (b.id === bookingId ? { ...b, status: "Accepted" } : b))
       );
-      setActionSuccessMessage(`Commission ${bookingId} has been confirmed for production.`);
+      setActionSuccessMessage(`Booking ${bookingId} accepted successfully!`);
     } catch (err: any) {
       alert(err.message || "Failed to accept booking");
     } finally {
@@ -128,7 +133,7 @@ export default function CreatorDashboardPage() {
             : b
         )
       );
-      setActionSuccessMessage(`Booking ${decliningBookingId} declined (${selectedReason}). DP1 recommendation triggered for client.`);
+      setActionSuccessMessage(`Booking ${decliningBookingId} declined with reason: "${selectedReason}"`);
       setDecliningBookingId(null);
     } catch (err: any) {
       alert(err.message || "Failed to decline booking");
@@ -151,25 +156,25 @@ export default function CreatorDashboardPage() {
   });
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-12 max-w-[1280px] mx-auto bg-[#FBF9F5] text-[#1C1917]">
+    <div className="min-h-screen px-4 sm:px-6 py-10 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8C6D58]/10 border border-[#8C6D58]/20 text-[#8C6D58] text-xs tracking-wider uppercase font-semibold mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             Feature 4: Creator Dashboard
           </div>
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-[#1C1917] tracking-tight leading-tight">
-            Creator Studio & Inquiries
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+            Creator Dashboard
           </h1>
-          <p className="text-[#68625D] text-base sm:text-lg mt-3 max-w-2xl font-light leading-relaxed">
-            Review incoming commission briefs, verify deliverable timelines, and confirm production schedules with editorial poise.
+          <p className="text-muted-foreground text-base sm:text-lg mt-1.5">
+            Manage incoming booking inquiries, evaluate scopes, and accept or decline client offers.
           </p>
         </div>
 
         <Link
           href="/gigs/new"
-          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-[16px] bg-[#A34835] text-white font-semibold uppercase tracking-wider text-xs hover:bg-[#8C3B2A] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-[0_4px_14px_rgba(163,72,53,0.25)] shrink-0 self-start md:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-all shrink-0 self-start md:self-auto shadow-sm"
         >
           <span>Post Another Gig</span>
           <ArrowRight className="w-4 h-4" />
@@ -178,81 +183,81 @@ export default function CreatorDashboardPage() {
 
       {/* Action Success Alert */}
       {actionSuccessMessage && (
-        <div className="mb-8 p-4 rounded-[16px] bg-[#3D724D]/10 border border-[#3D724D]/25 text-[#3D724D] flex items-center justify-between text-sm animate-slide-up shadow-xs">
-          <div className="flex items-center gap-2.5">
+        <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-between text-sm animate-slide-up">
+          <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>{actionSuccessMessage}</span>
           </div>
           <button
             onClick={() => setActionSuccessMessage(null)}
-            className="text-[#3D724D]/80 hover:text-[#3D724D] p-1 transition-colors"
+            className="text-emerald-400/80 hover:text-emerald-400 p-1"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Editorial Stats Overview Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
-        <div className="p-6 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#8E8780] block mb-2">
-            Total Inquiries
+      {/* Stats Overview Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="p-5 rounded-2xl border border-border bg-card shadow-sm">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+            Total Requests
           </span>
           <div className="flex items-baseline justify-between">
-            <span className="font-mono text-3xl sm:text-4xl font-light text-[#1C1917]">{totalCount}</span>
-            <LayoutDashboard className="w-5 h-5 text-[#8C6D58]" />
+            <span className="text-2xl sm:text-3xl font-black text-foreground">{totalCount}</span>
+            <LayoutDashboard className="w-5 h-5 text-muted-foreground" />
           </div>
         </div>
 
-        <div className="p-6 rounded-[24px] border border-[#B47228]/25 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#B47228] block mb-2">
+        <div className="p-5 rounded-2xl border border-amber-500/30 bg-amber-500/5 shadow-sm">
+          <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider block mb-1">
             Pending Review
           </span>
           <div className="flex items-baseline justify-between">
-            <span className="font-mono text-3xl sm:text-4xl font-light text-[#B47228]">{pendingCount}</span>
-            <Clock className="w-5 h-5 text-[#B47228]" />
+            <span className="text-2xl sm:text-3xl font-black text-amber-400">{pendingCount}</span>
+            <Clock className="w-5 h-5 text-amber-400" />
           </div>
         </div>
 
-        <div className="p-6 rounded-[24px] border border-[#3D724D]/25 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#3D724D] block mb-2">
-            Confirmed Bookings
+        <div className="p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 shadow-sm">
+          <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider block mb-1">
+            Accepted Bookings
           </span>
           <div className="flex items-baseline justify-between">
-            <span className="font-mono text-3xl sm:text-4xl font-light text-[#3D724D]">{acceptedCount}</span>
-            <CheckCircle2 className="w-5 h-5 text-[#3D724D]" />
+            <span className="text-2xl sm:text-3xl font-black text-emerald-400">{acceptedCount}</span>
+            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
           </div>
         </div>
 
-        <div className="p-6 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200">
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[#8E8780] block mb-2">
-            Fulfillment Ratio
+        <div className="p-5 rounded-2xl border border-border bg-card shadow-sm">
+          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
+            Acceptance Rate
           </span>
           <div className="flex items-baseline justify-between">
-            <span className="font-mono text-3xl sm:text-4xl font-light text-[#1C1917]">{acceptanceRate}%</span>
-            <TrendingUp className="w-5 h-5 text-[#8C6D58]" />
+            <span className="text-2xl sm:text-3xl font-black text-foreground">{acceptanceRate}%</span>
+            <TrendingUp className="w-5 h-5 text-primary" />
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 mb-8 border-b border-[#E7E2D9] pb-4">
+      <div className="flex items-center gap-2 mb-6 border-b border-border pb-3">
         {(["All", "Pending", "Accepted", "Declined"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setFilterTab(tab)}
-            className={`px-5 py-2.5 rounded-[16px] text-xs font-semibold uppercase tracking-wider transition-all duration-200 flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 ${
               filterTab === tab
-                ? "bg-[#A34835] text-white shadow-xs"
-                : "text-[#68625D] hover:text-[#1C1917] hover:bg-white"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
             }`}
           >
             <span>{tab}</span>
             <span
-              className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${
+              className={`px-1.5 py-0.2 rounded-full text-[10px] ${
                 filterTab === tab
-                  ? "bg-white/20 text-white"
-                  : "bg-[#F5F2EC] text-[#8E8780]"
+                  ? "bg-primary-foreground/20 text-primary-foreground"
+                  : "bg-muted text-muted-foreground"
               }`}
             >
               {tab === "All"
@@ -271,25 +276,22 @@ export default function CreatorDashboardPage() {
       {loading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((n) => (
-            <div key={n} className="p-8 rounded-[24px] border border-[#E7E2D9] bg-white space-y-4 shadow-xs">
-              <div className="h-4 bg-[#F3EFEA] rounded w-1/4 animate-pulse" />
-              <div className="h-6 bg-[#F3EFEA] rounded w-1/2 animate-pulse" />
-              <div className="h-16 bg-[#F5F2EC] rounded-[16px] w-full animate-pulse" />
+            <div key={n} className="p-6 rounded-2xl border border-border bg-card animate-pulse space-y-3">
+              <div className="h-5 bg-muted rounded w-1/4" />
+              <div className="h-4 bg-muted rounded w-1/2" />
+              <div className="h-12 bg-muted rounded w-full" />
             </div>
           ))}
         </div>
       ) : filteredBookings.length === 0 ? (
-        <div className="text-center py-20 px-6 rounded-[24px] border border-dashed border-[#DCD5C9] bg-white shadow-xs">
-          <div className="w-12 h-12 rounded-full bg-[#F5F2EC] flex items-center justify-center mx-auto mb-3 text-[#8C6D58]">
-            <LayoutDashboard className="w-5 h-5" />
-          </div>
-          <p className="font-serif text-xl font-light text-[#1C1917]">No inquiries listed under &quot;{filterTab}&quot;</p>
-          <p className="text-xs text-[#68625D] mt-1 max-w-md mx-auto font-light">
-            When prospective clients book your services, requests populate instantaneously in this ledger.
+        <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-border bg-card/40">
+          <p className="text-base font-semibold text-foreground">No bookings found in &quot;{filterTab}&quot;</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            When clients book your gigs or switch roles, requests will populate here in real time.
           </p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {filteredBookings.map((booking) => {
             const isPending = booking.status === "Pending";
             const isAccepted = booking.status === "Accepted";
@@ -299,92 +301,92 @@ export default function CreatorDashboardPage() {
               <div
                 key={booking.id}
                 id={`booking-feed-item-${booking.id}`}
-                className="p-7 sm:p-8 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200 space-y-5"
+                className="p-6 rounded-2xl border border-border bg-card hover:border-border/90 transition-all shadow-sm space-y-4"
               >
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   <div>
-                    {/* Status Badge & Booking ID */}
-                    <div className="flex items-center gap-2.5 mb-3">
+                    {/* Header line: status tag & booking ID */}
+                    <div className="flex items-center gap-2 mb-2">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5 border ${
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-1 ${
                           isPending
-                            ? "bg-[#B47228]/10 text-[#B47228] border-[#B47228]/25"
+                            ? "bg-amber-500/10 text-amber-400 border border-amber-500/25"
                             : isAccepted
-                            ? "bg-[#3D724D]/10 text-[#3D724D] border-[#3D724D]/25"
-                            : "bg-[#A83C3C]/10 text-[#A83C3C] border-[#A83C3C]/25"
+                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/25"
+                            : "bg-rose-500/10 text-rose-400 border border-rose-500/25"
                         }`}
                       >
-                        {isPending && <Clock className="w-3.5 h-3.5" />}
-                        {isAccepted && <CheckCircle2 className="w-3.5 h-3.5" />}
-                        {isDeclined && <XCircle className="w-3.5 h-3.5" />}
+                        {isPending && <Clock className="w-3 h-3" />}
+                        {isAccepted && <CheckCircle2 className="w-3 h-3" />}
+                        {isDeclined && <XCircle className="w-3 h-3" />}
                         <span>{booking.status}</span>
                       </span>
 
-                      <span className="font-mono text-xs text-[#8E8780]">
+                      <span className="font-mono text-xs text-muted-foreground">
                         {booking.id}
                       </span>
                     </div>
 
-                    <h3 className="font-serif text-2xl font-light text-[#1C1917]">
+                    <h3 className="text-lg font-bold text-foreground">
                       {booking.gig_title}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-2 text-xs text-[#68625D] mt-1.5 font-light">
-                      <span className="px-2.5 py-0.5 rounded-[12px] bg-[#F5F2EC] border border-[#DCD5C9] text-[#1C1917]">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground mt-1">
+                      <span className="px-2 py-0.5 rounded bg-muted text-foreground font-medium">
                         {booking.category}
                       </span>
                       <span>&middot;</span>
-                      <span className="font-mono text-[#1C1917] font-medium">{booking.rate}</span>
+                      <span className="font-semibold text-foreground">{booking.rate}</span>
                     </div>
                   </div>
 
                   {/* Client Info Card */}
-                  <div className="flex items-center gap-3 bg-[#F5F2EC] p-3 rounded-[16px] border border-[#E7E2D9] self-start">
-                    <div className="w-9 h-9 rounded-full bg-white border border-[#DCD5C9] flex items-center justify-center text-[#8C6D58] font-semibold text-xs">
+                  <div className="flex items-center gap-2.5 bg-muted/40 p-2.5 rounded-xl border border-border/60 self-start">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
                       {booking.client_name.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="text-xs">
-                      <p className="font-medium text-[#1C1917]">{booking.client_name}</p>
-                      <p className="text-[#8E8780] text-[11px]">Client Inquiry</p>
+                      <p className="font-semibold text-foreground">{booking.client_name}</p>
+                      <p className="text-muted-foreground text-[11px]">Client Inquiry</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Project Scope / Notes */}
-                <div className="p-5 rounded-[16px] bg-[#FAF8F5] border border-[#E7E2D9] text-xs text-[#1C1917] leading-relaxed font-light">
-                  <span className="font-semibold uppercase tracking-widest text-[#8C6D58] block text-[10px] mb-1.5">
-                    Commission Scope & Client Brief:
+                <div className="p-4 rounded-xl bg-muted/30 border border-border/60 text-xs text-foreground leading-relaxed">
+                  <span className="font-semibold text-muted-foreground block text-[11px] uppercase tracking-wider mb-1">
+                    Project Scope & Notes:
                   </span>
                   {booking.notes}
                 </div>
 
-                {/* Metadata & Actions */}
-                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#E7E2D9]">
-                  <div className="flex flex-wrap items-center gap-5 text-xs text-[#68625D] font-light">
+                {/* Metadata row & Actions */}
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <div className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-[#8C6D58]" />
-                      <span>Delivery Target: <strong className="text-[#1C1917] font-mono">{booking.requested_date}</strong></span>
+                      <Calendar className="w-3.5 h-3.5 text-primary" />
+                      <span>Requested Date: <strong className="text-foreground">{booking.requested_date}</strong></span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#8E8780]" />
-                      <span className="font-mono text-[#8E8780]">Logged: {booking.created_at}</span>
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>Received: {booking.created_at}</span>
                     </div>
                   </div>
 
-                  {/* Pending Decision Buttons */}
+                  {/* Actions for Pending */}
                   {isPending && (
-                    <div className="flex items-center gap-2.5 self-end sm:self-auto">
+                    <div className="flex items-center gap-2 self-end sm:self-auto">
                       <button
                         onClick={() => handleAccept(booking.id)}
                         disabled={processingId === booking.id}
-                        className="px-5 py-2.5 rounded-[16px] bg-[#3D724D] hover:brightness-110 text-white text-xs font-semibold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 shadow-xs hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                        className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm active:scale-95 disabled:opacity-50"
                       >
                         <Check className="w-3.5 h-3.5" />
-                        <span>Accept Offer</span>
+                        <span>Accept</span>
                       </button>
                       <button
                         onClick={() => handleOpenDeclineModal(booking.id)}
                         disabled={processingId === booking.id}
-                        className="px-5 py-2.5 rounded-[16px] bg-[#F5F2EC] text-[#A83C3C] hover:bg-[#A83C3C]/10 border border-[#A83C3C]/30 text-xs font-semibold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+                        className="px-4 py-2 rounded-xl bg-destructive/15 text-destructive hover:bg-destructive/25 border border-destructive/30 text-xs font-semibold transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
                       >
                         <X className="w-3.5 h-3.5" />
                         <span>Decline</span>
@@ -392,18 +394,18 @@ export default function CreatorDashboardPage() {
                     </div>
                   )}
 
-                  {/* Declined Status Pill */}
+                  {/* Declined tag */}
                   {isDeclined && booking.decline_reason && (
-                    <div className="text-xs text-[#A83C3C] bg-[#A83C3C]/10 px-3.5 py-1.5 rounded-[16px] border border-[#A83C3C]/25">
-                      Reason Tag: <strong className="font-medium">{booking.decline_reason}</strong>
+                    <div className="text-xs text-rose-400 bg-rose-500/10 px-3 py-1 rounded-lg border border-rose-500/20">
+                      Reason: <strong className="font-semibold">{booking.decline_reason}</strong>
                     </div>
                   )}
 
-                  {/* Accepted Status Pill */}
+                  {/* Accepted tag */}
                   {isAccepted && (
-                    <div className="text-xs text-[#3D724D] bg-[#3D724D]/10 px-3.5 py-1.5 rounded-[16px] border border-[#3D724D]/25 flex items-center gap-1.5">
+                    <div className="text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/20 flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Confirmed for Production</span>
+                      <span>Confirmed for Delivery</span>
                     </div>
                   )}
                 </div>
@@ -415,37 +417,37 @@ export default function CreatorDashboardPage() {
 
       {/* Decline Reason Modal */}
       {decliningBookingId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1C1917]/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_16px_48px_rgba(0,0,0,0.12)] p-7 sm:p-8 space-y-6 animate-slide-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl p-6 space-y-5 animate-slide-up">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-serif text-2xl font-light text-[#1C1917]">Decline Commission</h3>
-                <p className="text-xs text-[#68625D] mt-1 font-light leading-relaxed">
-                  Categorize the reason so the client is smoothly presented alternative practitioners through the DP1 protocol.
+                <h3 className="text-lg font-bold text-foreground">Decline Booking Request</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Select a transparent reason so the client is smoothly routed to similar creators (DP1).
                 </p>
               </div>
               <button
                 onClick={() => setDecliningBookingId(null)}
-                className="p-1 rounded-[12px] text-[#8E8780] hover:text-[#1C1917] transition-colors"
+                className="p-1 rounded-lg text-muted-foreground hover:text-foreground"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Reason Options */}
-            <div className="space-y-2.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-[#68625D]">
-                Decline Rationale Tag <span className="text-[#A83C3C]">*</span>
+            {/* Quick Reason Options */}
+            <div className="space-y-2">
+              <label className="block text-xs font-semibold text-foreground">
+                Select Decline Reason Tag <span className="text-destructive">*</span>
               </label>
               {DECLINE_REASONS.map((reason) => (
                 <button
                   key={reason}
                   type="button"
                   onClick={() => setSelectedReason(reason)}
-                  className={`w-full p-3.5 rounded-[16px] text-xs font-medium border text-left flex items-center justify-between transition-all duration-200 ${
+                  className={`w-full p-3 rounded-xl text-xs font-semibold border text-left flex items-center justify-between transition-all ${
                     selectedReason === reason
-                      ? "border-[#A83C3C] bg-[#A83C3C]/10 text-[#A83C3C] shadow-xs"
-                      : "border-[#DCD5C9] bg-[#F5F2EC] text-[#68625D] hover:border-[#8C6D58] hover:text-[#1C1917]"
+                      ? "border-destructive/60 bg-destructive/10 text-destructive shadow-sm"
+                      : "border-border bg-muted/40 text-foreground hover:bg-muted"
                   }`}
                 >
                   <span>{reason}</span>
@@ -454,11 +456,11 @@ export default function CreatorDashboardPage() {
               ))}
             </div>
 
-            <div className="pt-2 flex items-center justify-end gap-3">
+            <div className="pt-2 flex items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setDecliningBookingId(null)}
-                className="px-5 py-2.5 rounded-[16px] border border-[#DCD5C9] text-[#68625D] text-xs font-medium hover:text-[#1C1917] hover:border-[#8C6D58] transition-all duration-200"
+                className="px-4 py-2 rounded-xl border border-border text-foreground text-xs font-medium hover:bg-muted transition-colors"
               >
                 Cancel
               </button>
@@ -466,10 +468,10 @@ export default function CreatorDashboardPage() {
                 type="button"
                 onClick={handleConfirmDecline}
                 disabled={processingId === decliningBookingId}
-                className="px-5 py-2.5 rounded-[16px] bg-[#A83C3C] text-white text-xs font-semibold uppercase tracking-wider hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-1.5 shadow-xs"
+                className="px-4 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-all flex items-center gap-1.5 shadow-sm"
               >
                 {processingId === decliningBookingId ? (
-                  <span>Recording...</span>
+                  <span>Declining...</span>
                 ) : (
                   <span>Confirm Decline</span>
                 )}

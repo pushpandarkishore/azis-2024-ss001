@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Sparkles, ArrowLeft, Send, CheckCircle2, AlertCircle, DollarSign, User } from "lucide-react";
+import { Sparkles, ArrowLeft, Send, CheckCircle2, AlertCircle, DollarSign, Tag, FileText, User } from "lucide-react";
 import { useDemoRole } from "@/lib/role-context";
 
 const CATEGORIES = [
@@ -82,6 +82,7 @@ export default function PostGigPage() {
       }
 
       const created = await res.json();
+      // Redirect to marketplace with newly created gig highlighted
       router.push(`/marketplace?newGigId=${created.id}&created=true`);
     } catch (err: any) {
       setServerError(err.message || "An unexpected error occurred");
@@ -90,41 +91,41 @@ export default function PostGigPage() {
   };
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-12 max-w-[1280px] mx-auto bg-[#FBF9F5] text-[#1C1917]">
+    <div className="min-h-screen px-4 py-10 max-w-5xl mx-auto">
       {/* Breadcrumb & Navigation */}
-      <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#8C6D58] mb-8 font-semibold">
-        <Link href="/marketplace" className="hover:text-[#1C1917] flex items-center gap-1.5 transition-colors duration-200">
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Marketplace</span>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+        <Link href="/marketplace" className="hover:text-foreground flex items-center gap-1 transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Marketplace
         </Link>
-        <span className="text-[#DCD5C9]">/</span>
-        <span className="text-[#1C1917] font-medium">Post a Gig</span>
+        <span>/</span>
+        <span className="text-foreground font-medium">Post a Gig</span>
       </div>
 
       {/* Header Banner */}
-      <div className="mb-12">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8C6D58]/10 border border-[#8C6D58]/20 text-[#8C6D58] text-xs tracking-wider uppercase font-semibold mb-4">
+      <div className="mb-10">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
           <Sparkles className="w-3.5 h-3.5" />
           Feature 1: Post a Gig
         </div>
-        <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-[#1C1917] tracking-tight leading-tight">
-          Publish Your Creative Service
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
+          Offer Your Creative Service
         </h1>
-        <p className="text-[#68625D] text-base sm:text-lg mt-3 max-w-2xl font-light leading-relaxed">
-          List your craft on the SkillSwap editorial directory. Clients and fellow practitioners can initiate verified direct bookings or calibrate balanced barter exchanges.
+        <p className="text-muted-foreground text-base sm:text-lg mt-2 max-w-2xl">
+          Publish your creative offering to the SkillSwap marketplace. Clients can discover and book you directly or request an AI barter swap.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        {/* Form Card (7 cols) */}
-        <div className="lg:col-span-7">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Form Card */}
+        <div className="lg:col-span-2">
           <form
             onSubmit={handleSubmit}
-            className="p-8 sm:p-10 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] space-y-7"
+            className="p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6"
             noValidate
           >
             {serverError && (
-              <div className="p-4 rounded-[16px] bg-[#A83C3C]/10 border border-[#A83C3C]/25 text-[#A83C3C] text-sm flex items-start gap-2.5">
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-sm flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
                 <span>{serverError}</span>
               </div>
@@ -132,8 +133,8 @@ export default function PostGigPage() {
 
             {/* Title */}
             <div>
-              <label htmlFor="gig-title" className="block text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2.5">
-                Gig Title <span className="text-[#A83C3C]">*</span>
+              <label htmlFor="gig-title" className="block text-sm font-semibold text-foreground mb-2">
+                Gig Title <span className="text-destructive">*</span>
               </label>
               <input
                 id="gig-title"
@@ -143,15 +144,15 @@ export default function PostGigPage() {
                   setTitle(e.target.value);
                   if (errors.title) setErrors((prev) => ({ ...prev, title: "" }));
                 }}
-                placeholder="e.g. Modern Brand Architecture & Scalable Design Systems"
-                className={`w-full px-4 py-3.5 rounded-[16px] border bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] transition-all duration-200 focus:outline-none ${
+                placeholder="e.g. Modern Brand Identity & Scalable Figma Design System"
+                className={`w-full px-4 py-3 rounded-xl border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all ${
                   errors.title
-                    ? "border-[#A83C3C] focus:border-[#A83C3C] focus:ring-1 focus:ring-[#A83C3C]"
-                    : "border-[#DCD5C9] focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30"
+                    ? "border-destructive focus:ring-destructive/30"
+                    : "border-border focus:ring-primary/40 focus:border-primary"
                 }`}
               />
               {errors.title && (
-                <p className="text-[#A83C3C] text-xs mt-1.5 flex items-center gap-1">
+                <p className="text-destructive text-xs mt-1.5 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" /> {errors.title}
                 </p>
               )}
@@ -159,8 +160,8 @@ export default function PostGigPage() {
 
             {/* Category Selector */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2.5">
-                Discipline Category <span className="text-[#A83C3C]">*</span>
+              <label className="block text-sm font-semibold text-foreground mb-2">
+                Category <span className="text-destructive">*</span>
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {CATEGORIES.map((cat) => (
@@ -168,10 +169,10 @@ export default function PostGigPage() {
                     key={cat}
                     type="button"
                     onClick={() => setCategory(cat)}
-                    className={`px-4 py-3 rounded-[16px] text-xs font-medium border text-left transition-all duration-200 flex items-center justify-between ${
+                    className={`px-3.5 py-2.5 rounded-xl text-sm font-medium border text-left transition-all flex items-center justify-between ${
                       category === cat
-                        ? "bg-[#A34835] text-white border-[#A34835] shadow-xs scale-[1.01]"
-                        : "bg-[#F5F2EC] text-[#68625D] border-[#DCD5C9] hover:border-[#8C6D58] hover:text-[#1C1917]"
+                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                        : "bg-background text-muted-foreground border-border hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
                     <span>{cat}</span>
@@ -180,7 +181,7 @@ export default function PostGigPage() {
                 ))}
               </div>
               {errors.category && (
-                <p className="text-[#A83C3C] text-xs mt-1.5 flex items-center gap-1">
+                <p className="text-destructive text-xs mt-1.5 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" /> {errors.category}
                 </p>
               )}
@@ -188,11 +189,11 @@ export default function PostGigPage() {
 
             {/* Rate */}
             <div>
-              <label htmlFor="gig-rate" className="block text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2.5">
-                Rate / Valuation <span className="text-[#A83C3C]">*</span>
+              <label htmlFor="gig-rate" className="block text-sm font-semibold text-foreground mb-2">
+                Rate / Pricing <span className="text-destructive">*</span>
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8C6D58]" />
+                <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   id="gig-rate"
                   type="text"
@@ -201,19 +202,19 @@ export default function PostGigPage() {
                     setRate(e.target.value);
                     if (errors.rate) setErrors((prev) => ({ ...prev, rate: "" }));
                   }}
-                  placeholder="e.g. $65/hr or $280 flat deliverable"
-                  className={`w-full pl-10 pr-4 py-3.5 rounded-[16px] border bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] font-mono text-sm transition-all duration-200 focus:outline-none ${
+                  placeholder="e.g. $45/hr or $150 flat"
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all ${
                     errors.rate
-                      ? "border-[#A83C3C] focus:border-[#A83C3C] focus:ring-1 focus:ring-[#A83C3C]"
-                      : "border-[#DCD5C9] focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30"
+                      ? "border-destructive focus:ring-destructive/30"
+                      : "border-border focus:ring-primary/40 focus:border-primary"
                   }`}
                 />
               </div>
-              <p className="text-xs text-[#8E8780] mt-1.5">
-                State your rate clearly (e.g. $65/hr or $250 flat). Used for client billing and LEU equivalence calculations.
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Provide either an hourly rate (e.g. $45/hr) or a flat deliverable fee (e.g. $150 flat).
               </p>
               {errors.rate && (
-                <p className="text-[#A83C3C] text-xs mt-1 flex items-center gap-1">
+                <p className="text-destructive text-xs mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" /> {errors.rate}
                 </p>
               )}
@@ -221,26 +222,26 @@ export default function PostGigPage() {
 
             {/* Creator Name */}
             <div>
-              <label htmlFor="creator-name" className="block text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2.5">
-                Practitioner Identity
+              <label htmlFor="creator-name" className="block text-sm font-semibold text-foreground mb-2">
+                Creator Display Name
               </label>
               <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8C6D58]" />
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   id="creator-name"
                   type="text"
                   value={creatorName}
                   onChange={(e) => setCreatorName(e.target.value)}
-                  placeholder="e.g. Elena Rostova"
-                  className="w-full pl-10 pr-4 py-3.5 rounded-[16px] border border-[#DCD5C9] bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30 focus:outline-none transition-all duration-200 text-sm"
+                  placeholder="e.g. Alex Rivera"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all"
                 />
               </div>
             </div>
 
             {/* Description */}
             <div>
-              <label htmlFor="gig-description" className="block text-xs font-semibold uppercase tracking-wider text-[#68625D] mb-2.5">
-                Scope & Deliverable Specifications <span className="text-[#A83C3C]">*</span>
+              <label htmlFor="gig-description" className="block text-sm font-semibold text-foreground mb-2">
+                Detailed Description <span className="text-destructive">*</span>
               </label>
               <textarea
                 id="gig-description"
@@ -250,40 +251,40 @@ export default function PostGigPage() {
                   setDescription(e.target.value);
                   if (errors.description) setErrors((prev) => ({ ...prev, description: "" }));
                 }}
-                placeholder="Detail what is included: source files, timeline, toolstack (e.g. Figma, DaVinci Resolve, Ableton), revision policy, and expected deliverables..."
-                className={`w-full p-4 rounded-[16px] border bg-[#F5F2EC] text-[#1C1917] placeholder:text-[#8E8780] focus:outline-none transition-all duration-200 text-sm leading-relaxed ${
+                placeholder="Explain what deliverables you provide, your process, tools used (e.g. Figma, Premiere, Ableton), and typical turnaround timeline..."
+                className={`w-full p-4 rounded-xl border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 transition-all text-sm leading-relaxed ${
                   errors.description
-                    ? "border-[#A83C3C] focus:border-[#A83C3C] focus:ring-1 focus:ring-[#A83C3C]"
-                    : "border-[#DCD5C9] focus:border-[#A34835] focus:ring-1 focus:ring-[#A34835]/30"
+                    ? "border-destructive focus:ring-destructive/30"
+                    : "border-border focus:ring-primary/40 focus:border-primary"
                 }`}
               />
-              <div className="flex justify-between items-center text-xs text-[#8E8780] mt-2 font-mono">
-                <span>Min 15 characters. Editorial precision.</span>
+              <div className="flex justify-between items-center text-xs text-muted-foreground mt-1.5">
+                <span>Min 15 characters. Be clear and specific.</span>
                 <span>{description.length} chars</span>
               </div>
               {errors.description && (
-                <p className="text-[#A83C3C] text-xs mt-1 flex items-center gap-1">
+                <p className="text-destructive text-xs mt-1 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5" /> {errors.description}
                 </p>
               )}
             </div>
 
             {/* Submit Button */}
-            <div className="pt-4">
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-4 px-6 rounded-[16px] bg-[#A34835] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#8C3B2A] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(163,72,53,0.25)] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3.5 px-6 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {submitting ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 bg-white/30 rounded-full animate-pulse" />
-                    <span>Publishing to Editorial Index...</span>
-                  </div>
+                  <>
+                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                    <span>Publishing Gig to Marketplace...</span>
+                  </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Publish Gig & View in Directory</span>
+                    <span>Publish Gig & View in Marketplace</span>
                   </>
                 )}
               </button>
@@ -291,59 +292,59 @@ export default function PostGigPage() {
           </form>
         </div>
 
-        {/* Live Preview Sidebar (5 cols) */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="text-xs uppercase tracking-widest text-[#8C6D58] font-semibold flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#A34835]" />
-            Live Marketplace Preview
+        {/* Live Preview Sidebar */}
+        <div className="space-y-4">
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            Live Marketplace Card Preview
           </div>
 
-          <div className="p-8 rounded-[24px] border border-[#E7E2D9] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-200 space-y-5">
+          <div className="p-6 rounded-2xl border border-border bg-card shadow-sm space-y-4">
             <div className="flex items-start justify-between gap-3">
-              <span className="px-3 py-1 rounded-full text-xs uppercase tracking-wider font-semibold bg-[#8C6D58]/10 text-[#8C6D58] border border-[#8C6D58]/20">
-                {category || "Discipline"}
+              <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                {category || "Category"}
               </span>
-              <span className="font-mono text-sm font-semibold text-[#1C1917] bg-[#F5F2EC] px-2.5 py-1 rounded-md border border-[#DCD5C9]">
+              <span className="text-sm font-bold text-foreground">
                 {rate || "$--/hr"}
               </span>
             </div>
 
             <div>
-              <h3 className="font-serif text-2xl font-light text-[#1C1917] line-clamp-2">
-                {title || "Your Offering Title Will Appear Here"}
+              <h3 className="text-lg font-bold text-foreground line-clamp-2">
+                {title || "Your Gig Title Appears Here"}
               </h3>
-              <p className="text-xs text-[#68625D] font-light mt-2.5 line-clamp-3 leading-relaxed">
-                {description || "A clean editorial summary of your craft, deliverables, and terms will appear here for prospective clients and collaborators to discover."}
+              <p className="text-xs text-muted-foreground mt-2 line-clamp-3 leading-relaxed">
+                {description || "A preview of your detailed description will display here on the marketplace card so potential clients can quickly understand your offering."}
               </p>
             </div>
 
-            <div className="pt-5 border-t border-[#E7E2D9] flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#F5F2EC] border border-[#DCD5C9] flex items-center justify-center text-[#8C6D58] text-xs font-semibold">
+            <div className="pt-4 border-t border-border/70 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center text-white text-xs font-bold">
                   {(creatorName || user.name).substring(0, 2).toUpperCase()}
                 </div>
                 <div className="text-xs">
-                  <p className="font-medium text-[#1C1917] line-clamp-1">{creatorName || user.name}</p>
-                  <p className="text-[#3D724D] text-[11px]">Available</p>
+                  <p className="font-semibold text-foreground line-clamp-1">{creatorName || user.name}</p>
+                  <p className="text-muted-foreground">Active Now</p>
                 </div>
               </div>
               <button
                 type="button"
                 disabled
-                className="px-4 py-2 rounded-[16px] bg-[#A34835]/15 text-[#A34835] text-xs font-semibold uppercase tracking-wider cursor-default"
+                className="px-3.5 py-1.5 rounded-lg bg-primary/20 text-primary text-xs font-semibold"
               >
-                Inquire
+                Book Now
               </button>
             </div>
           </div>
 
-          <div className="p-6 rounded-[24px] bg-[#F5F2EC] border border-[#E7E2D9] text-xs text-[#68625D] space-y-3 leading-relaxed">
-            <div className="font-medium text-[#1C1917] flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-[#3D724D]" />
-              Evaluation Benchmark: Feature 1
+          <div className="p-4 rounded-xl bg-muted/40 border border-border/60 text-xs text-muted-foreground space-y-2">
+            <div className="font-semibold text-foreground flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              Evaluation Check: Feature 1
             </div>
             <p>
-              Validates all input criteria, transmits the payload to <code className="text-[#A34835] font-mono">POST /api/gigs</code>, and transitions immediately to <code className="text-[#A34835] font-mono">/marketplace</code> showing your freshly registered listing.
+              Validates inputs, submits via <code className="text-primary font-mono">POST /api/gigs</code>, and automatically redirects to <code className="text-primary font-mono">/marketplace</code> showing the new gig card.
             </p>
           </div>
         </div>
