@@ -1,15 +1,35 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
+import os from 'os';
 
 const DB_PATH = process.env.DATABASE_PATH || './skillswap.db';
-const resolvedPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), DB_PATH);
 
 let db: Database.Database;
 
 export function getDb(): Database.Database {
   if (!db) {
+    let resolvedPath = path.resolve(/*turbopackIgnore: true*/ process.cwd(), DB_PATH);
+
+    // Vercel Serverless environment compatibility (ensures writable SQLite)
+    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+      const tmpPath = path.join(os.tmpdir(), 'skillswap.db');
+      if (!fs.existsSync(tmpPath) && fs.existsSync(/*turbopackIgnore: true*/ resolvedPath)) {
+        try {
+          fs.copyFileSync(/*turbopackIgnore: true*/ resolvedPath, tmpPath);
+        } catch {
+          // If copy fails, database will initialize fresh in /tmp
+        }
+      }
+      resolvedPath = tmpPath;
+    }
+
     db = new Database(resolvedPath);
-    db.pragma('journal_mode = WAL');
+    try {
+      db.pragma('journal_mode = WAL');
+    } catch {
+      // Ignore if WAL mode is constrained
+    }
     db.pragma('foreign_keys = ON');
     initializeSchema(db);
   }
