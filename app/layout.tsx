@@ -46,7 +46,7 @@ export default function RootLayout({
                 <a href="/profile/new" className="hover:text-foreground transition-colors">Join</a>
                 <a href="/api/v1/health" className="hover:text-foreground transition-colors">API</a>
               </div>
-              <p className="text-xs">AZIS-2024-SS001 · CODE2CAREER Track 2</p>
+              <p className="text-xs">AZIS-UXE4MN · CODE2CAREER Track 2</p>
             </div>
           </footer>
         </ThemeProvider>

@@ -16,7 +16,7 @@
 
 # Extended Technical Architecture Rationale
 
-**Hackathon ID**: AZIS-2024-SS001  
+**Hackathon ID**: AZIS-UXE4MN  
 **Project**: SkillSwap — CODE2CAREER Track 2
 
 ---
@@ -238,4 +238,4 @@ The scarcity bonus is non-gameable because:
 
 ---
 
-*AZIS-2024-SS001 — SkillSwap — CODE2CAREER Track 2*
+*AZIS-UXE4MN — SkillSwap — CODE2CAREER Track 2*
